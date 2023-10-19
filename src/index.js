@@ -9,23 +9,6 @@ const router = createBrowserRouter([
     path: "/",
     element: <Register />,
   },
-  // {
-  //   path: "/signup",
-  //   element: <SignUp />,
-  // },
-  // {
-  //   path: "/jobfinder",
-  //   element: <JobFinder />,
-  // },
-  // {
-  //   path: "/addjob",
-  //   element: <AddJob />,
-  // },
-  // {
-  //   path: "/viewjob/:jobId",
-  //   element: <ViewJob />,
-  // },
-  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
