@@ -8,6 +8,20 @@ import ShareIcon from "../../assets/images/share-icon.svg";
 const Dashboard = () => {
   const [activeScreen, setActiveScreen] = useState("dashboard");
 
+  const [showModal, setShowModal] = useState(false);
+
+  const handleDelete = () => {
+    setShowModal(true);
+  };
+
+  const handleConfirm = () => {
+    // Perform the delete action here
+    setShowModal(false);
+  };
+
+  const handleCancel = () => {
+    setShowModal(false);
+  };
   return (
     <>
       <div className={styles.mainContainer}>
@@ -66,126 +80,145 @@ const Dashboard = () => {
             </div>
           )}
           {activeScreen === "analytics" && (
-            <div style={{marginLeft:"auto", marginRight:"auto"}}>
-              <div className={styles.analyticsScreen}>
-                <h1 className={styles.analyticsHeading}>Quiz Analytics</h1>
-                <table className={styles.analyticsTable}>
-                  <thead>
-                    <tr>
-                      <th>S.No</th>
-                      <th>Quiz Name</th>
-                      <th>Created on</th>
-                      <th>Impression</th>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Quiz 1</td>
-                      <td>01 Sep, 2023</td>
-                      <td>345</td>
-                      <td>
-                        <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" />
-                        <img src={ShareIcon} alt="" />
-                      </td>
-                      <td>Question Wise Analysis</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Quiz 2</td>
-                      <td>04 Sep, 2023</td>
-                      <td>667</td>
-                      <td>
-                        <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" />
-                        <img src={ShareIcon} alt="" />
-                      </td>
-                      <td>Question Wise Analysis</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Quiz 3</td>
-                      <td>06 Sep, 2023</td>
-                      <td>1.6K</td>
-                      <td>
-                        <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" />
-                        <img src={ShareIcon} alt="" />
-                      </td>
-                      <td>Question Wise Analysis</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>Quiz 4</td>
-                      <td>09 Sep, 2023</td>
-                      <td>789</td>
-                      <td>
-                        <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" />
-                        <img src={ShareIcon} alt="" />
-                      </td>
-                      <td>Question Wise Analysis</td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td>Quiz 5</td>
-                      <td>11 Sep, 2023</td>
-                      <td>995</td>
-                      <td>
-                        <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" />
-                        <img src={ShareIcon} alt="" />
-                      </td>
-                      <td>Question Wise Analysis</td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>Quiz 6</td>
-                      <td>13 Sep, 2023</td>
-                      <td>2.5K</td>
-                      <td>
-                        <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" />
-                        <img src={ShareIcon} alt="" />
-                      </td>
-                      <td>Question Wise Analysis</td>
-                    </tr>
-                    <tr>
-                      <td>7</td>
-                      <td>Quiz 7</td>
-                      <td>14 Sep, 2023</td>
-                      <td>231</td>
-                      <td>
-                        <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" />
-                        <img src={ShareIcon} alt="" />
-                      </td>
-                      <td>Question Wise Analysis</td>
-                    </tr>
-                    <tr>
-                      <td>8</td>
-                      <td>Quiz 8</td>
-                      <td>17 Sep, 2023</td>
-                      <td>1.3K</td>
-                      <td>
-                        <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" />
-                        <img src={ShareIcon} alt="" />
-                      </td>
-                      <td>Question Wise Analysis</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <div className={styles.analyticsScreen}>
+              <h1 className={styles.analyticsHeading}>Quiz Analytics</h1>
+              <table className={styles.analyticsTable}>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Quiz Name</th>
+                    <th>Created on</th>
+                    <th>Impression</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Quiz 1</td>
+                    <td>01 Sep, 2023</td>
+                    <td>345</td>
+                    <td>
+                      <img src={EditIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete}/>
+                      <img src={ShareIcon} alt="" />
+                    </td>
+                    <td>Question Wise Analysis</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Quiz 2</td>
+                    <td>04 Sep, 2023</td>
+                    <td>667</td>
+                    <td>
+                      <img src={EditIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                      <img src={ShareIcon} alt="" />
+                    </td>
+                    <td>Question Wise Analysis</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Quiz 3</td>
+                    <td>06 Sep, 2023</td>
+                    <td>1.6K</td>
+                    <td>
+                      <img src={EditIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                      <img src={ShareIcon} alt="" />
+                    </td>
+                    <td>Question Wise Analysis</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Quiz 4</td>
+                    <td>09 Sep, 2023</td>
+                    <td>789</td>
+                    <td>
+                      <img src={EditIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                      <img src={ShareIcon} alt="" />
+                    </td>
+                    <td>Question Wise Analysis</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Quiz 5</td>
+                    <td>11 Sep, 2023</td>
+                    <td>995</td>
+                    <td>
+                      <img src={EditIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                      <img src={ShareIcon} alt="" />
+                    </td>
+                    <td>Question Wise Analysis</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>Quiz 6</td>
+                    <td>13 Sep, 2023</td>
+                    <td>2.5K</td>
+                    <td>
+                      <img src={EditIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                      <img src={ShareIcon} alt="" />
+                    </td>
+                    <td>Question Wise Analysis</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>Quiz 7</td>
+                    <td>14 Sep, 2023</td>
+                    <td>231</td>
+                    <td>
+                      <img src={EditIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                      <img src={ShareIcon} alt="" />
+                    </td>
+                    <td>Question Wise Analysis</td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>Quiz 8</td>
+                    <td>17 Sep, 2023</td>
+                    <td>1.3K</td>
+                    <td>
+                      <img src={EditIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                      <img src={ShareIcon} alt="" />
+                    </td>
+                    <td>Question Wise Analysis</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           )}
           {activeScreen === "createQuiz" && (
             <div className={styles.createQuizScreen}></div>
           )}
         </div>
+        {showModal && (
+          <div
+            className={styles.modalOverlay}
+            onClick={handleCancel}
+          >
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()} >
+
+              <div className={styles.modalContent}>
+                <p style={{fontSize:"1.7rem",fontWeight:"bold", textAlign:"center"}}>Are you sure you want to delete?</p>
+                <div className={styles.buttonContainer}>
+                  <button onClick={handleConfirm} className={styles.confirmDeleteModalButton}>
+                    Confirm Delete
+                  </button>
+                  <button onClick={handleCancel} className={styles.cancelModalButton}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
