@@ -58,6 +58,11 @@
   border: none;
 }
 
+.subContainer{
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .dashboardScreen {
   padding: 3rem;
 }
@@ -104,4 +109,38 @@
 .creationDate {
   color: #60b84b;
   font-size: 0.9rem;
+}
+
+.analyticsScreen {
+  text-align: center;
+}
+
+.analyticsHeading {
+  color: #5076ff;
+  margin: 2rem;
+}
+
+.analyticsTable {
+  border-collapse: collapse;
+}
+
+.analyticsTable th,
+.analyticsTable td {
+  padding: 8px;
+}
+
+.analyticsTable tbody tr{
+  border-radius: 1rem;
+}
+
+.analyticsTable tr:nth-child(2n) {
+  background-color: #b3c4ff;
+  border-radius: 1rem;
+}
+
+.analyticsTable thead {
+  background-color: #5076ff;
+  border-radius: 1rem;
+  color: #ffffff;
+  padding: 12px;
 }
