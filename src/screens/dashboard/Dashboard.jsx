@@ -4,6 +4,8 @@ import ImpressionsIcon from "../../assets/images/impressions.svg";
 import DeleteIcon from "../../assets/images/delete-icon.svg";
 import EditIcon from "../../assets/images/edit-icon.svg";
 import ShareIcon from "../../assets/images/share-icon.svg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
   const [activeScreen, setActiveScreen] = useState("dashboard");
@@ -22,6 +24,18 @@ const Dashboard = () => {
   const handleCancel = () => {
     setShowModal(false);
   };
+
+  const notifyLinkCopied = () => toast.success('Link copied to Clipboard', {
+    position: "top-right",
+    autoClose: 1400,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    });
+
   return (
     <>
       <div className={styles.mainContainer}>
@@ -101,8 +115,8 @@ const Dashboard = () => {
                     <td>345</td>
                     <td>
                       <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete}/>
-                      <img src={ShareIcon} alt="" />
+                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
                     </td>
                     <td>Question Wise Analysis</td>
                   </tr>
@@ -114,7 +128,7 @@ const Dashboard = () => {
                     <td>
                       <img src={EditIcon} alt="" />
                       <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" />
+                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
                     </td>
                     <td>Question Wise Analysis</td>
                   </tr>
@@ -126,7 +140,7 @@ const Dashboard = () => {
                     <td>
                       <img src={EditIcon} alt="" />
                       <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" />
+                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
                     </td>
                     <td>Question Wise Analysis</td>
                   </tr>
@@ -138,7 +152,7 @@ const Dashboard = () => {
                     <td>
                       <img src={EditIcon} alt="" />
                       <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" />
+                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
                     </td>
                     <td>Question Wise Analysis</td>
                   </tr>
@@ -150,7 +164,7 @@ const Dashboard = () => {
                     <td>
                       <img src={EditIcon} alt="" />
                       <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" />
+                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
                     </td>
                     <td>Question Wise Analysis</td>
                   </tr>
@@ -162,7 +176,7 @@ const Dashboard = () => {
                     <td>
                       <img src={EditIcon} alt="" />
                       <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" />
+                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
                     </td>
                     <td>Question Wise Analysis</td>
                   </tr>
@@ -174,7 +188,7 @@ const Dashboard = () => {
                     <td>
                       <img src={EditIcon} alt="" />
                       <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" />
+                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
                     </td>
                     <td>Question Wise Analysis</td>
                   </tr>
@@ -186,7 +200,7 @@ const Dashboard = () => {
                     <td>
                       <img src={EditIcon} alt="" />
                       <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" />
+                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
                     </td>
                     <td>Question Wise Analysis</td>
                   </tr>
@@ -199,19 +213,29 @@ const Dashboard = () => {
           )}
         </div>
         {showModal && (
-          <div
-            className={styles.modalOverlay}
-            onClick={handleCancel}
-          >
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()} >
-
+          <div className={styles.modalOverlay} onClick={handleCancel}>
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
               <div className={styles.modalContent}>
-                <p style={{fontSize:"1.7rem",fontWeight:"bold", textAlign:"center"}}>Are you sure you want to delete?</p>
+                <p
+                  style={{
+                    fontSize: "1.7rem",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Are you sure you want to delete?
+                </p>
                 <div className={styles.buttonContainer}>
-                  <button onClick={handleConfirm} className={styles.confirmDeleteModalButton}>
+                  <button
+                    onClick={handleConfirm}
+                    className={styles.confirmDeleteModalButton}
+                  >
                     Confirm Delete
                   </button>
-                  <button onClick={handleCancel} className={styles.cancelModalButton}>
+                  <button
+                    onClick={handleCancel}
+                    className={styles.cancelModalButton}
+                  >
                     Cancel
                   </button>
                 </div>
@@ -220,6 +244,7 @@ const Dashboard = () => {
           </div>
         )}
       </div>
+      <ToastContainer />
     </>
   );
 };
