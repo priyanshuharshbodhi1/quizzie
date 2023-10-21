@@ -17,7 +17,6 @@ const Dashboard = () => {
   };
 
   const handleConfirm = () => {
-    // Perform the delete action here
     setShowModal(false);
   };
 
@@ -25,15 +24,40 @@ const Dashboard = () => {
     setShowModal(false);
   };
 
-  const notifyLinkCopied = () => toast.success('Link copied to Clipboard', {
-    position: "top-right",
-    autoClose: 1400,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "light",
+  //for createQuiz Screen
+  const [quizName, setQuizName] = useState("");
+  const [quizType, setQuizType] = useState("");
+  const handleCancelQuizModal = () => {
+    setActiveScreen("dashboard");
+  };
+
+  const handleShowQuizQueModal = () => {
+    setShowQuestionModal(true);
+    setActiveScreen("dashboard");
+  };
+
+  const handleCreateQuiz = () => {
+    setShowQuestionModal(false);
+  };
+
+  //for questions and options
+  const [showQuestionModal, setShowQuestionModal] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleRadioSelect = (index) => {
+    setSelectedOption(index);
+  };
+
+  const notifyLinkCopied = () =>
+    toast.success("Link copied to Clipboard", {
+      position: "top-right",
+      autoClose: 1400,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
     });
 
   return (
@@ -208,9 +232,9 @@ const Dashboard = () => {
               </table>
             </div>
           )}
-          {activeScreen === "createQuiz" && (
+          {/* {activeScreen === "createQuiz" && (
             <div className={styles.createQuizScreen}></div>
-          )}
+          )} */}
         </div>
         {showModal && (
           <div className={styles.modalOverlay} onClick={handleCancel}>
@@ -237,6 +261,171 @@ const Dashboard = () => {
                     className={styles.cancelModalButton}
                   >
                     Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {activeScreen === "createQuiz" && (
+          <div className={styles.createQuizScreen}>
+            <div className={styles.modalOverlay}>
+              <div
+                className={styles.modal}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className={styles.modalQuizNameContent}>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Quiz name"
+                      value={quizName}
+                      onChange={(e) => setQuizName(e.target.value)}
+                      className={styles.modalQuizNameInput}
+                    />
+                  </div>
+                  <div className={styles.modalQuizTypeContainer}>
+                    <div>Quiz Type</div>
+                    <label className={styles.modalLabel}>
+                      Q & A
+                      <input
+                        type="radio"
+                        value="Q & A"
+                        checked={quizType === "Q & A"}
+                        onChange={() => setQuizType("Q & A")}
+                        className={styles.modalRadio}
+                      />
+                    </label>
+                    <label className={styles.modalLabel}>
+                      Poll Type
+                      <input
+                        type="radio"
+                        value="Poll Type"
+                        checked={quizType === "Poll Type"}
+                        onChange={() => setQuizType("Poll Type")}
+                        className={styles.modalRadio}
+                      />
+                    </label>
+                  </div>
+                  <div className={styles.buttonContainer}>
+                    <button
+                      onClick={handleCancelQuizModal}
+                      className={styles.cancelModalButton}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleShowQuizQueModal}
+                      className={styles.confirmQuizNameButton}
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showQuestionModal && (
+          <div
+            className={styles.questionModalOverlay}
+            onClick={handleCreateQuiz}
+          >
+            <div
+              className={styles.questionModal}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={styles.modalContent}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: ".5rem",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div className={styles.questionNo}>1</div>
+                    <div className={styles.questionNo}>2</div>
+                    <div>+</div>
+                  </div>
+                  <p>Max 5 Questions</p>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Poll Question"
+                    className={styles.pollQuestion}
+                  />
+                </div>
+                <div
+                  className={styles.pollOptionType}
+                  style={{ display: "flex" }}
+                >
+                  <div>Option Type</div>
+                  <label className={styles.modalLabel}>
+                    <input type="radio" name="optionType" /> Text
+                  </label>
+                  <label className={styles.modalLabel}>
+                    <input type="radio" name="optionType" />
+                    Image URL
+                  </label>
+                  <label className={styles.modalLabel}>
+                    <input type="radio" name="optionType" />
+                    Text and Image URL
+                  </label>
+                </div>
+                <div className={styles.pollOptions} style={{ display: "flex", flexDirection:"column" }}>
+                  {[0, 1, 2, 3].map((index) => (
+                    <label className={styles.modalLabel} key={index}>
+                      <input
+                        type="radio"
+                        name="optionType"
+                        checked={selectedOption === index}
+                        onChange={() => handleRadioSelect(index)}
+                      />
+                      <input
+                        type="text"
+                        name="optionType"
+                        className={
+                          selectedOption === index ? styles.greenBackground : ""
+                        }
+                      />
+                    </label>
+                  ))}
+                </div>
+
+                <div className={styles.timerType} style={{ display: "flex" }}>
+                  <div>Timer Type</div>
+                  <label className={styles.modalLabel}>
+                    <input type="radio" name="timerType" /> 5 Sec
+                  </label>
+                  <label className={styles.modalLabel}>
+                    <input type="radio" name="timerType" />
+                    10 Sec
+                  </label>
+                  <label className={styles.modalLabel}>
+                    <input type="radio" name="timerType" /> OFF
+                  </label>
+                </div>
+                <div className={styles.buttonContainer}>
+                  <button
+                    onClick={handleCreateQuiz}
+                    className={styles.cancelModalButton}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleCreateQuiz}
+                    className={styles.confirmCreateQuizButton}
+                  >
+                    Create Quiz
                   </button>
                 </div>
               </div>
