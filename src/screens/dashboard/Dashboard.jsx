@@ -315,7 +315,6 @@ const Dashboard = () => {
                   <div className={styles.modalQuizTypeContainer}>
                     <div>Quiz Type</div>
                     <label className={styles.modalLabel}>
-                      Q & A
                       <input
                         type="radio"
                         value="Q & A"
@@ -323,9 +322,9 @@ const Dashboard = () => {
                         onChange={() => setQuizType("Q & A")}
                         className={styles.modalRadio}
                       />
+                      Q & A
                     </label>
                     <label className={styles.modalLabel}>
-                      Poll Type
                       <input
                         type="radio"
                         value="Poll Type"
@@ -333,6 +332,7 @@ const Dashboard = () => {
                         onChange={() => setQuizType("Poll Type")}
                         className={styles.modalRadio}
                       />
+                      Poll Type
                     </label>
                   </div>
                   <div className={styles.buttonContainer}>
