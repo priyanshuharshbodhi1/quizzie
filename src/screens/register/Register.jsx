@@ -19,9 +19,13 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log(formData);
+  // };
+
+  const handleSubmitSignUpForm = (e) => {
+    console.log("submit form");
   };
 
   return (
@@ -51,9 +55,10 @@ const Register = () => {
           {activeMode === "signup" && (
             <div className={styles.signUpFormContainer}>
               <form
-                action="/your-server-endpoint"
-                method="post"
-                onSubmit={handleSubmit}
+                action={`${process.env.REACT_APP_API_BASE_URL}/api/signup`}
+                method="POST"
+                // onSubmit={handleSubmit}
+
                 className={styles.formContainer}
               >
                 <div className={styles.formAttribute}>
@@ -114,7 +119,11 @@ const Register = () => {
                   />
                 </div>
 
-                <button type="submit" className={styles.signUpBtn}>
+                <button
+                  type="submit"
+                  className={styles.signUpBtn}
+                  onClick={handleSubmitSignUpForm}
+                >
                   Sign Up
                 </button>
               </form>
@@ -124,9 +133,9 @@ const Register = () => {
           {activeMode === "login" && (
             <div className={styles.logInFormContainer}>
               <form
-                action="/your-server-endpoint"
-                method="post"
-                onSubmit={handleSubmit}
+                action={`${process.env.REACT_APP_API_BASE_URL}/api/login`}
+                method="POST"
+                // onSubmit={handleSubmit}
                 className={styles.formContainer}
               >
                 <div className={styles.formAttribute}>
