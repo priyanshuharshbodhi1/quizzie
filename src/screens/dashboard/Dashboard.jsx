@@ -38,14 +38,42 @@ const Dashboard = () => {
 
   const handleCreateQuiz = () => {
     setShowQuestionModal(false);
+    console.log("Creating quiz", questions);
   };
+
+  //for question numbers
+  const [questions, setQuestions] = useState([{ title: "" }]);
+
+  const handleAddQuestion = () => {
+    if (questions.length < 5) {
+      setQuestions([...questions, { title: "" }]);
+    }
+  };
+
+  const handleDeleteQuestion = (index) => {
+    if (questions.length > 1) {
+      const updatedQuestions = questions.filter((_, i) => i !== index);
+      setQuestions(updatedQuestions);
+    }
+  };
+
+  // const handleQuestionTitleChange = (e, index) => {
+  //   const updatedQuestions = [...questions];
+  //   updatedQuestions[index].title = e.target.value;
+  //   setQuestions(updatedQuestions);
+  // };
 
   //for questions and options
   const [showQuestionModal, setShowQuestionModal] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOptionType, setSelectedOptionType] = useState(0);
+  const [ansOption, setAnsOption] = useState(null);
 
   const handleRadioSelect = (index) => {
-    setSelectedOption(index);
+    setAnsOption(index);
+  };
+
+  const handleOptionTypeSelect = (index) => {
+    setSelectedOptionType(index);
   };
 
   const notifyLinkCopied = () =>
@@ -351,9 +379,28 @@ const Dashboard = () => {
                       alignItems: "center",
                     }}
                   >
-                    <div className={styles.questionNo}>1</div>
-                    <div className={styles.questionNo}>2</div>
-                    <div>+</div>
+                    {questions.map((question, index) => (
+                      <div className={styles.questionNo} key={index}>
+                        {index + 1}
+                        {index !== 0 && (
+                          <span
+                            className={styles.crossBtn}
+                            onClick={() => handleDeleteQuestion(index)}
+                          >
+                            x
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                    {questions.length < 5 && (
+                      <div
+                        className={styles.addBtn}
+                        onClick={handleAddQuestion}
+                        style={{ cursor: "pointer" }}
+                      >
+                        +
+                      </div>
+                    )}
                   </div>
                   <p>Max 5 Questions</p>
                 </div>
@@ -364,40 +411,97 @@ const Dashboard = () => {
                     className={styles.pollQuestion}
                   />
                 </div>
+
                 <div
                   className={styles.pollOptionType}
                   style={{ display: "flex" }}
                 >
                   <div>Option Type</div>
                   <label className={styles.modalLabel}>
-                    <input type="radio" name="optionType" /> Text
+                    <input
+                      type="radio"
+                      name="optionType"
+                      checked={selectedOptionType === 0}
+                      onChange={() => handleOptionTypeSelect(0)}
+                    />
+                    Text
                   </label>
                   <label className={styles.modalLabel}>
-                    <input type="radio" name="optionType" />
+                    <input
+                      type="radio"
+                      name="optionType"
+                      checked={selectedOptionType === 1}
+                      onChange={() => handleOptionTypeSelect(1)}
+                    />
                     Image URL
                   </label>
                   <label className={styles.modalLabel}>
-                    <input type="radio" name="optionType" />
+                    <input
+                      type="radio"
+                      name="optionType"
+                      checked={selectedOptionType === 2}
+                      onChange={() => handleOptionTypeSelect(2)}
+                    />
                     Text and Image URL
                   </label>
                 </div>
-                <div className={styles.pollOptions} style={{ display: "flex", flexDirection:"column" }}>
+                <div
+                  className={styles.pollOptions}
+                  style={{ display: "flex", flexDirection: "column" }}
+                >
                   {[0, 1, 2, 3].map((index) => (
-                    <label className={styles.modalLabel} key={index}>
+                    <div className={styles.modalLabel} key={index}>
                       <input
                         type="radio"
-                        name="optionType"
-                        checked={selectedOption === index}
+                        name="correctOption"
+                        // checked={selectedOptionType === index}
                         onChange={() => handleRadioSelect(index)}
                       />
-                      <input
-                        type="text"
-                        name="optionType"
-                        className={
-                          selectedOption === index ? styles.greenBackground : ""
-                        }
-                      />
-                    </label>
+                      {selectedOptionType === 0 && (
+                        <div>
+                          {" "}
+                          <input
+                            type="text"
+                            name="optionText"
+                            placeholder="Option"
+                            className={`${styles.optionInput} ${
+                              ansOption === index ? styles.greenBackground : ""
+                            } `}
+                          />
+                          <br />
+                        </div>
+                      )}
+                      {selectedOptionType === 1 && (
+                        <input
+                          type="url"
+                          name="optionImageURL"
+                          placeholder="Option Image URL"
+                          className={`${styles.optionInput} ${
+                            ansOption === index ? styles.greenBackground : ""
+                          } `}
+                        />
+                      )}
+                      {selectedOptionType === 2 && (
+                        <>
+                          <input
+                            type="text"
+                            name="optionText"
+                            placeholder="Option"
+                            className={`${styles.optionInput} ${
+                              ansOption === index ? styles.greenBackground : ""
+                            } `}
+                          />
+                          <input
+                            type="url"
+                            name="optionImageURL"
+                            placeholder="Option Image URL"
+                            className={`${styles.optionInput} ${
+                              ansOption === index ? styles.greenBackground : ""
+                            }  `}
+                          />
+                        </>
+                      )}
+                    </div>
                   ))}
                 </div>
 
