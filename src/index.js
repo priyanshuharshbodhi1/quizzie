@@ -16,11 +16,11 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "/pollsucess",
+    path: "/pollcompleted",
     element: <PollCompletion />,
   },
   {
-    path: "/quizsucess",
+    path: "/quizcompleted",
     element: <QuizCompletion />,
   },
 ]);

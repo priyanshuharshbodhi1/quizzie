@@ -1,10 +1,16 @@
-import React from 'react'
-import styles from "./PoleCompletion.module.css"
+import React from "react";
+import styles from "./PollCompletion.module.css";
 
 const PoleCompletion = () => {
   return (
-    <div className={styles.mainContainer}>PoleCompletion</div>
-  )
-}
+    <>
+      <div className={styles.mainContainer}>
+        <div className={styles.thankYouContainer}>
+          Thank you for participating in the Poll
+        </div>
+      </div>
+    </>
+  );
+};
 
-export default PoleCompletion
+export default PoleCompletion;
