@@ -22,6 +22,7 @@ const Dashboard = () => {
 
   const handleCancel = () => {
     setShowModal(false);
+    setShowQuizPublishedModal(false);
   };
 
   //for createQuiz Screen
@@ -38,6 +39,7 @@ const Dashboard = () => {
 
   const handleCreateQuiz = () => {
     setShowQuestionModal(false);
+    setShowQuizPublishedModal(true)
     console.log("Creating quiz", questions);
   };
 
@@ -75,6 +77,9 @@ const Dashboard = () => {
   const handleOptionTypeSelect = (index) => {
     setSelectedOptionType(index);
   };
+
+  //for quiz published modal
+  const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
 
   const notifyLinkCopied = () =>
     toast.success("Link copied to Clipboard", {
@@ -530,6 +535,33 @@ const Dashboard = () => {
                     className={styles.confirmCreateQuizButton}
                   >
                     Create Quiz
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {showQuizPublishedModal && (
+          <div className={styles.modalOverlay} onClick={handleCancel}>
+            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.modalContent}>
+                <p
+                  style={{
+                    fontSize: "1.4rem",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Congrats your Quiz is <br />Published!
+                </p>
+                <div className={styles.quizLink}>https://quizzie.com/dashboard</div>
+                <div className={styles.buttonContainer}>
+                  <button
+                    // onClick={handleConfirm}
+                    className={styles.shareLinkBtn}
+                    onClick={notifyLinkCopied}
+                  >
+                    Share
                   </button>
                 </div>
               </div>

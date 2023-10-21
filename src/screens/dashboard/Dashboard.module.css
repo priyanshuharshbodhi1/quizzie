@@ -322,3 +322,22 @@
   flex: 1;
   color: #fff;
 }
+
+/* quiz published modal */
+.quizLink{
+  background-color: #EDEDED;
+  width: -moz-fit-content;
+  border-radius: .5rem;
+  padding: .3rem 1rem;
+  margin: 1rem 0;
+}
+
+.shareLinkBtn {
+  border-radius: 0.625rem;
+  background: #60b84b;
+  border: none;
+  padding: 0.7rem 3.5rem;
+  color: #fff;
+  margin: 1rem auto;
+  cursor: pointer;
+}
