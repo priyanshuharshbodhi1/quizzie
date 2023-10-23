@@ -33,13 +33,17 @@ const Dashboard = () => {
   };
 
   const handleShowQuizQueModal = () => {
-    setShowQuestionModal(true);
-    setActiveScreen("dashboard");
+    if (quizName && quizType) {
+      setShowQuestionModal(true);
+      setActiveScreen("dashboard");
+    } else {
+      alert("Please fill in the Quiz Name and Quiz Type");
+    }
   };
 
   const handleCreateQuiz = () => {
     setShowQuestionModal(false);
-    setShowQuizPublishedModal(true)
+    setShowQuizPublishedModal(true);
     console.log("Creating quiz", questions);
   };
 
@@ -391,6 +395,7 @@ const Dashboard = () => {
                           <span
                             className={styles.crossBtn}
                             onClick={() => handleDeleteQuestion(index)}
+                            style={{cursor: "pointer"}}
                           >
                             x
                           </span>
@@ -409,85 +414,61 @@ const Dashboard = () => {
                   </div>
                   <p>Max 5 Questions</p>
                 </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Poll Question"
-                    className={styles.pollQuestion}
-                  />
-                </div>
+                <div className={styles.questionContent}>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Poll Question"
+                      className={styles.pollQuestion}
+                    />
+                  </div>
 
-                <div
-                  className={styles.pollOptionType}
-                  style={{ display: "flex" }}
-                >
-                  <div>Option Type</div>
-                  <label className={styles.modalLabel}>
-                    <input
-                      type="radio"
-                      name="optionType"
-                      checked={selectedOptionType === 0}
-                      onChange={() => handleOptionTypeSelect(0)}
-                    />
-                    Text
-                  </label>
-                  <label className={styles.modalLabel}>
-                    <input
-                      type="radio"
-                      name="optionType"
-                      checked={selectedOptionType === 1}
-                      onChange={() => handleOptionTypeSelect(1)}
-                    />
-                    Image URL
-                  </label>
-                  <label className={styles.modalLabel}>
-                    <input
-                      type="radio"
-                      name="optionType"
-                      checked={selectedOptionType === 2}
-                      onChange={() => handleOptionTypeSelect(2)}
-                    />
-                    Text and Image URL
-                  </label>
-                </div>
-                <div
-                  className={styles.pollOptions}
-                  style={{ display: "flex", flexDirection: "column" }}
-                >
-                  {[0, 1, 2, 3].map((index) => (
-                    <div className={styles.modalLabel} key={index}>
+                  <div
+                    className={styles.pollOptionType}
+                    style={{ display: "flex" }}
+                  >
+                    <div>Option Type</div>
+                    <label className={styles.modalLabel}>
                       <input
                         type="radio"
-                        name="correctOption"
-                        // checked={selectedOptionType === index}
-                        onChange={() => handleRadioSelect(index)}
+                        name="optionType"
+                        checked={selectedOptionType === 0}
+                        onChange={() => handleOptionTypeSelect(0)}
                       />
-                      {selectedOptionType === 0 && (
-                        <div>
-                          {" "}
-                          <input
-                            type="text"
-                            name="optionText"
-                            placeholder="Option"
-                            className={`${styles.optionInput} ${
-                              ansOption === index ? styles.greenBackground : ""
-                            } `}
-                          />
-                          <br />
-                        </div>
-                      )}
-                      {selectedOptionType === 1 && (
+                      Text
+                    </label>
+                    <label className={styles.modalLabel}>
+                      <input
+                        type="radio"
+                        name="optionType"
+                        checked={selectedOptionType === 1}
+                        onChange={() => handleOptionTypeSelect(1)}
+                      />
+                      Image URL
+                    </label>
+                    <label className={styles.modalLabel}>
+                      <input
+                        type="radio"
+                        name="optionType"
+                        checked={selectedOptionType === 2}
+                        onChange={() => handleOptionTypeSelect(2)}
+                      />
+                      Text and Image URL
+                    </label>
+                  </div>
+                  <div
+                    className={styles.pollOptions}
+                    style={{ display: "flex", flexDirection: "column" }}
+                  >
+                    {[0, 1, 2, 3].map((index) => (
+                      <div className={styles.modalLabel} key={index}>
                         <input
-                          type="url"
-                          name="optionImageURL"
-                          placeholder="Option Image URL"
-                          className={`${styles.optionInput} ${
-                            ansOption === index ? styles.greenBackground : ""
-                          } `}
+                          type="radio"
+                          name="correctOption"
+                          // checked={selectedOptionType === index}
+                          onChange={() => handleRadioSelect(index)}
                         />
-                      )}
-                      {selectedOptionType === 2 && (
-                        <>
+                        {selectedOptionType === 0 && (
                           <input
                             type="text"
                             name="optionText"
@@ -496,46 +477,72 @@ const Dashboard = () => {
                               ansOption === index ? styles.greenBackground : ""
                             } `}
                           />
+                        )}
+                        {selectedOptionType === 1 && (
                           <input
                             type="url"
                             name="optionImageURL"
                             placeholder="Option Image URL"
                             className={`${styles.optionInput} ${
                               ansOption === index ? styles.greenBackground : ""
-                            }  `}
+                            } `}
                           />
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                        )}
+                        {selectedOptionType === 2 && (
+                          <>
+                            <input
+                              type="text"
+                              name="optionText"
+                              placeholder="Option"
+                              className={`${styles.optionInput} ${
+                                ansOption === index
+                                  ? styles.greenBackground
+                                  : ""
+                              } `}
+                            />
+                            <input
+                              type="url"
+                              name="optionImageURL"
+                              placeholder="Option Image URL"
+                              className={`${styles.optionInput} ${
+                                ansOption === index
+                                  ? styles.greenBackground
+                                  : ""
+                              }  `}
+                            />
+                          </>
+                        )}
+                      </div>
+                    ))}
+                  </div>
 
-                <div className={styles.timerType} style={{ display: "flex" }}>
-                  <div>Timer Type</div>
-                  <label className={styles.modalLabel}>
-                    <input type="radio" name="timerType" /> 5 Sec
-                  </label>
-                  <label className={styles.modalLabel}>
-                    <input type="radio" name="timerType" />
-                    10 Sec
-                  </label>
-                  <label className={styles.modalLabel}>
-                    <input type="radio" name="timerType" /> OFF
-                  </label>
-                </div>
-                <div className={styles.buttonContainer}>
-                  <button
-                    onClick={handleCreateQuiz}
-                    className={styles.cancelModalButton}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleCreateQuiz}
-                    className={styles.confirmCreateQuizButton}
-                  >
-                    Create Quiz
-                  </button>
+                  <div className={styles.timerType} style={{ display: "flex" }}>
+                    <div>Timer Type</div>
+                    <label className={styles.modalLabel}>
+                      <input type="radio" name="timerType" /> 5 Sec
+                    </label>
+                    <label className={styles.modalLabel}>
+                      <input type="radio" name="timerType" />
+                      10 Sec
+                    </label>
+                    <label className={styles.modalLabel}>
+                      <input type="radio" name="timerType" /> OFF
+                    </label>
+                  </div>
+                  <div className={styles.buttonContainer}>
+                    <button
+                      onClick={handleCreateQuiz}
+                      className={styles.cancelModalButton}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleCreateQuiz}
+                      className={styles.confirmCreateQuizButton}
+                    >
+                      Create Quiz
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -552,9 +559,12 @@ const Dashboard = () => {
                     textAlign: "center",
                   }}
                 >
-                  Congrats your Quiz is <br />Published!
+                  Congrats your Quiz is <br />
+                  Published!
                 </p>
-                <div className={styles.quizLink}>https://quizzie.com/dashboard</div>
+                <div className={styles.quizLink}>
+                  https://quizzie.com/dashboard
+                </div>
                 <div className={styles.buttonContainer}>
                   <button
                     // onClick={handleConfirm}

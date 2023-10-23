@@ -5,6 +5,7 @@ import Register from "./screens/register/Register";
 import Dashboard from "./screens/dashboard/Dashboard";
 import PollCompletion from "./screens/pollCompletion/PollCompletion";
 import QuizCompletion from "./screens/quizCompletion/QuizCompletion";
+import Questions from "./screens/questions/Questions";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/quizcompleted",
     element: <QuizCompletion />,
+  },
+  {
+    path: "/quiz/question/:id",
+    element: <Questions />,
   },
 ]);
 
