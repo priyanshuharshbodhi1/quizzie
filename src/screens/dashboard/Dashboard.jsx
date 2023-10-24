@@ -47,8 +47,9 @@ const Dashboard = () => {
     console.log("Creating quiz", questions);
   };
 
+  //Question Modal -
   //for question numbers
-  const [questions, setQuestions] = useState([{ title: "" }]);
+  const [questions, setQuestions] = useState([1]);
 
   const handleAddQuestion = () => {
     if (questions.length < 5) {
@@ -69,6 +70,8 @@ const Dashboard = () => {
   //   setQuestions(updatedQuestions);
   // };
 
+  
+
   //for questions and options
   const [showQuestionModal, setShowQuestionModal] = useState(false);
   const [selectedOptionType, setSelectedOptionType] = useState(0);
@@ -80,6 +83,59 @@ const Dashboard = () => {
 
   const handleOptionTypeSelect = (index) => {
     setSelectedOptionType(index);
+  };
+
+  // Add state variables to store user inputs
+  const [pollQuestion, setPollQuestion] = useState("");
+  const [options, setOptions] = useState(
+    Array(4).fill({ text: "", imageURL: "" })
+  );
+  // const [correctOption, setCorrectOption] = useState(null);
+  const [timerType, setTimerType] = useState("");
+
+  const handleCreateQuizSubmit = () => {
+    const quizData = {
+      pollQuestion,
+      options,
+      ansOption,
+      timerType,
+    };
+    // Validate all fields are filled
+    if (
+      pollQuestion === "" ||
+      selectedOptionType === null ||
+      options.filter((option) => option.text !== "" || option.imageURL !== "")
+        .length < 2 ||
+      ansOption === null ||
+      timerType === ""
+    ) {
+      alert("Please fill all the fields before creating the quiz.");
+      // console.log(quizData);
+    } else {
+      // Save the data in MongoDB or perform any other required action
+      setShowQuizPublishedModal(true);
+      setShowQuestionModal(false);
+      console.log("Quiz Data to be saved:", quizData);
+    }
+  };
+
+  const handleTimerTypeSelect = (value) => {
+    setTimerType(value);
+  };
+
+  const handleOptionTextChange = (e, index) => {
+    const updatedOptions = [...options];
+    updatedOptions[index] = { ...updatedOptions[index], text: e.target.value };
+    setOptions(updatedOptions);
+  };
+
+  const handleOptionImageURLChange = (e, index) => {
+    const updatedOptions = [...options];
+    updatedOptions[index] = {
+      ...updatedOptions[index],
+      imageURL: e.target.value,
+    };
+    setOptions(updatedOptions);
   };
 
   //for quiz published modal
@@ -269,9 +325,6 @@ const Dashboard = () => {
               </table>
             </div>
           )}
-          {/* {activeScreen === "createQuiz" && (
-            <div className={styles.createQuizScreen}></div>
-          )} */}
         </div>
         {showModal && (
           <div className={styles.modalOverlay} onClick={handleCancel}>
@@ -395,7 +448,7 @@ const Dashboard = () => {
                           <span
                             className={styles.crossBtn}
                             onClick={() => handleDeleteQuestion(index)}
-                            style={{cursor: "pointer"}}
+                            style={{ cursor: "pointer" }}
                           >
                             x
                           </span>
@@ -419,6 +472,8 @@ const Dashboard = () => {
                     <input
                       type="text"
                       placeholder="Poll Question"
+                      value={pollQuestion}
+                      onChange={(e) => setPollQuestion(e.target.value)}
                       className={styles.pollQuestion}
                     />
                   </div>
@@ -464,15 +519,17 @@ const Dashboard = () => {
                       <div className={styles.modalLabel} key={index}>
                         <input
                           type="radio"
-                          name="correctOption"
-                          // checked={selectedOptionType === index}
+                          name="ansOption"
+                          checked={ansOption === index}
                           onChange={() => handleRadioSelect(index)}
                         />
                         {selectedOptionType === 0 && (
                           <input
                             type="text"
                             name="optionText"
+                            value={options[index].text}
                             placeholder="Option"
+                            onChange={(e) => handleOptionTextChange(e, index)}
                             className={`${styles.optionInput} ${
                               ansOption === index ? styles.greenBackground : ""
                             } `}
@@ -482,7 +539,11 @@ const Dashboard = () => {
                           <input
                             type="url"
                             name="optionImageURL"
+                            value={options[index].imageURL}
                             placeholder="Option Image URL"
+                            onChange={(e) =>
+                              handleOptionImageURLChange(e, index)
+                            }
                             className={`${styles.optionInput} ${
                               ansOption === index ? styles.greenBackground : ""
                             } `}
@@ -493,7 +554,9 @@ const Dashboard = () => {
                             <input
                               type="text"
                               name="optionText"
+                              value={options[index].text}
                               placeholder="Option"
+                              onChange={(e) => handleOptionTextChange(e, index)}
                               className={`${styles.optionInput} ${
                                 ansOption === index
                                   ? styles.greenBackground
@@ -503,12 +566,16 @@ const Dashboard = () => {
                             <input
                               type="url"
                               name="optionImageURL"
+                              value={options[index].imageURL}
                               placeholder="Option Image URL"
+                              onChange={(e) =>
+                                handleOptionImageURLChange(e, index)
+                              }
                               className={`${styles.optionInput} ${
                                 ansOption === index
                                   ? styles.greenBackground
                                   : ""
-                              }  `}
+                              } `}
                             />
                           </>
                         )}
@@ -519,25 +586,42 @@ const Dashboard = () => {
                   <div className={styles.timerType} style={{ display: "flex" }}>
                     <div>Timer Type</div>
                     <label className={styles.modalLabel}>
-                      <input type="radio" name="timerType" /> 5 Sec
+                      <input
+                        type="radio"
+                        name="timerType"
+                        value="5 Sec"
+                        onChange={() => handleTimerTypeSelect("5 Sec")}
+                      />{" "}
+                      5 Sec
                     </label>
                     <label className={styles.modalLabel}>
-                      <input type="radio" name="timerType" />
+                      <input
+                        type="radio"
+                        name="timerType"
+                        value="10 Sec"
+                        onChange={() => handleTimerTypeSelect("10 Sec")}
+                      />
                       10 Sec
                     </label>
                     <label className={styles.modalLabel}>
-                      <input type="radio" name="timerType" /> OFF
+                      <input
+                        type="radio"
+                        name="timerType"
+                        value="OFF"
+                        onChange={() => handleTimerTypeSelect("OFF")}
+                      />{" "}
+                      OFF
                     </label>
                   </div>
                   <div className={styles.buttonContainer}>
                     <button
-                      onClick={handleCreateQuiz}
+                      // onClick={handleCreateQuiz}
                       className={styles.cancelModalButton}
                     >
                       Cancel
                     </button>
                     <button
-                      onClick={handleCreateQuiz}
+                      onClick={handleCreateQuizSubmit}
                       className={styles.confirmCreateQuizButton}
                     >
                       Create Quiz
