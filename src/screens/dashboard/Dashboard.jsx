@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Dashboard.module.css";
 import ImpressionsIcon from "../../assets/images/impressions.svg";
 import DeleteIcon from "../../assets/images/delete-icon.svg";
@@ -50,7 +50,6 @@ const Dashboard = () => {
   //Question Modal -
   //for question numbers
   const [questions, setQuestions] = useState([1]);
-
   const handleAddQuestion = () => {
     if (questions.length < 5) {
       setQuestions([...questions, { title: "" }]);
@@ -64,18 +63,28 @@ const Dashboard = () => {
     }
   };
 
-  // const handleQuestionTitleChange = (e, index) => {
-  //   const updatedQuestions = [...questions];
-  //   updatedQuestions[index].title = e.target.value;
-  //   setQuestions(updatedQuestions);
-  // };
+  // Initialize state for current question index
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
-  
+  // Update question number change handler to set current question index
+  const handleQuestionNoChange = (index) => {
+    setCurrentQuestionIndex(index);
+    // console.log(currentQuestionIndex);
+    // setPollQuestion(questions[index].questionText);
+    // setSelectedOptionType(questions[index].optionType);
+    // setOptions(questions[index].options);
+    // setAnsOption(questions[index].correctOption);
+    // setTimerType(questions[index].timerType);
+  };
+
+  useEffect(() => {
+    console.log(currentQuestionIndex + 1);
+  }, [currentQuestionIndex]);
 
   //for questions and options
   const [showQuestionModal, setShowQuestionModal] = useState(false);
-  const [selectedOptionType, setSelectedOptionType] = useState(0);
-  const [ansOption, setAnsOption] = useState(null);
+  // const [selectedOptionType, setSelectedOptionType] = useState(0);
+  // const [ansOption, setAnsOption] = useState(null);
 
   const handleRadioSelect = (index) => {
     setAnsOption(index);
@@ -86,15 +95,23 @@ const Dashboard = () => {
   };
 
   // Add state variables to store user inputs
-  const [pollQuestion, setPollQuestion] = useState("");
+  const [pollQuestion, setPollQuestion] = useState({});
+  const handleQuestionTextChange = (e, index) => {
+    const updatedQuestions = { ...pollQuestion };
+    updatedQuestions[index] = e.target.value;
+    setPollQuestion(updatedQuestions);
+  };
+
   const [options, setOptions] = useState(
     Array(4).fill({ text: "", imageURL: "" })
   );
-  // const [correctOption, setCorrectOption] = useState(null);
+  const [selectedOptionType, setSelectedOptionType] = useState(0);
+  const [ansOption, setAnsOption] = useState(null);
   const [timerType, setTimerType] = useState("");
 
   const handleCreateQuizSubmit = () => {
     const quizData = {
+      currentQuestionIndex,
       pollQuestion,
       options,
       ansOption,
@@ -433,6 +450,7 @@ const Dashboard = () => {
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
+                  className={styles.questionNoContainer}
                 >
                   <div
                     style={{
@@ -442,7 +460,11 @@ const Dashboard = () => {
                     }}
                   >
                     {questions.map((question, index) => (
-                      <div className={styles.questionNo} key={index}>
+                      <div
+                        className={styles.questionNo}
+                        key={index}
+                        onClick={() => handleQuestionNoChange(index)}
+                      >
                         {index + 1}
                         {index !== 0 && (
                           <span
@@ -472,8 +494,10 @@ const Dashboard = () => {
                     <input
                       type="text"
                       placeholder="Poll Question"
-                      value={pollQuestion}
-                      onChange={(e) => setPollQuestion(e.target.value)}
+                      value={pollQuestion[currentQuestionIndex] || ""}
+                      onChange={(e) =>
+                        handleQuestionTextChange(e, currentQuestionIndex)
+                      }
                       className={styles.pollQuestion}
                     />
                   </div>
