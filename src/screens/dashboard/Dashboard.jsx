@@ -60,21 +60,25 @@ const Dashboard = () => {
     if (questions.length > 1) {
       const updatedQuestions = questions.filter((_, i) => i !== index);
       setQuestions(updatedQuestions);
-    }
-  };
 
-  // Initialize state for current question index
+      if (currentQuestionIndex === index) {
+        setCurrentQuestionIndex(index > 0 ? index - 1 : 0);
+      } else if (currentQuestionIndex > index) {
+        setCurrentQuestionIndex(currentQuestionIndex - 1);
+      }
+    }
+    // setCurrentQuestionIndex(index-1)
+  };
+  
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  useEffect(() => {
+    console.log(currentQuestionIndex + 1);
+  }, [currentQuestionIndex]);
 
   // Update question number change handler to set current question index
   const handleQuestionNoChange = (index) => {
     setCurrentQuestionIndex(index);
-    // console.log(currentQuestionIndex);
-    // setPollQuestion(questions[index].questionText);
-    // setSelectedOptionType(questions[index].optionType);
-    // setOptions(questions[index].options);
-    // setAnsOption(questions[index].correctOption);
-    // setTimerType(questions[index].timerType);
   };
 
   useEffect(() => {
@@ -83,18 +87,11 @@ const Dashboard = () => {
 
   //for questions and options
   const [showQuestionModal, setShowQuestionModal] = useState(false);
-  // const [selectedOptionType, setSelectedOptionType] = useState(0);
-  // const [ansOption, setAnsOption] = useState(null);
-
-  // const handleRadioSelect = (index) => {
-  //   setAnsOption(index);
-  // };
 
   const handleOptionTypeSelect = (index) => {
     setSelectedOptionType(index);
   };
 
-  // Add state variables to store user inputs
   const [pollQuestion, setPollQuestion] = useState({});
   const handleQuestionTextChange = (e, index) => {
     const updatedQuestions = { ...pollQuestion };
@@ -138,16 +135,37 @@ const Dashboard = () => {
       timerType,
     };
     // Validate all fields are filled
+    const isPollQuestionFilled = pollQuestion[0].title !== "";
+    const isOptionsFilled = options.some((option) =>
+      option.some((item) => item.text !== "" || item.imageURL !== "")
+    );
+    const isAnsOptionFilled = Object.values(ansOption).some((value) => value !== null);
+    const isTimerTypeFilled = Object.values(timerType).some((value) => value !== "");
+  
+    if (!isPollQuestionFilled) {
+      console.log("Poll question is not filled");
+    }
+    if (selectedOptionType === null) {
+      console.log("Selected option type is not set");
+    }
+    if (!isOptionsFilled) {
+      console.log("Options are not filled");
+    }
+    if (!isAnsOptionFilled) {
+      console.log("Answer option is not filled");
+    }
+    if (!isTimerTypeFilled) {
+      console.log("Timer type is not filled");
+    }
+  
     if (
-      pollQuestion === "" ||
+      !isPollQuestionFilled ||
       selectedOptionType === null ||
-      options.filter((option) => option.text !== "" || option.imageURL !== "")
-        .length < 2 ||
-      ansOption === null ||
-      timerType === ""
+      !isOptionsFilled ||
+      !isAnsOptionFilled ||
+      !isTimerTypeFilled
     ) {
       alert("Please fill all the fields before creating the quiz.");
-      // console.log(quizData);
     } else {
       // Save the data in MongoDB or perform any other required action
       setShowQuizPublishedModal(true);
@@ -155,11 +173,8 @@ const Dashboard = () => {
       console.log("Quiz Data to be saved:", quizData);
     }
   };
-
-  // const handleTimerTypeSelect = (value) => {
-  //   setTimerType(value);
-  // };
-
+  
+  
   const handleOptionTextChange = (e, questionIndex, optionIndex) => {
     const updatedOptions = [...options];
     updatedOptions[questionIndex][optionIndex] = {
@@ -497,7 +512,6 @@ const Dashboard = () => {
                           <span
                             className={styles.crossBtn}
                             onClick={() => handleDeleteQuestion(index)}
-                            style={{ cursor: "pointer" }}
                           >
                             x
                           </span>
@@ -508,7 +522,6 @@ const Dashboard = () => {
                       <div
                         className={styles.addBtn}
                         onClick={handleAddQuestion}
-                        style={{ cursor: "pointer" }}
                       >
                         +
                       </div>
@@ -721,11 +734,11 @@ const Dashboard = () => {
         )}
         {showQuizPublishedModal && (
           <div className={styles.modalOverlay} onClick={handleCancel}>
-            <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalPublished} onClick={(e) => e.stopPropagation()}>
               <div className={styles.modalContent}>
                 <p
                   style={{
-                    fontSize: "1.4rem",
+                    fontSize: "1.7rem",
                     fontWeight: "bold",
                     textAlign: "center",
                   }}
