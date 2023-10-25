@@ -41,11 +41,15 @@ const Dashboard = () => {
     }
   };
 
-  const handleCreateQuiz = () => {
+  const handleCancelQuizQuestionModal = () => {
     setShowQuestionModal(false);
-    setShowQuizPublishedModal(true);
-    console.log("Creating quiz", questions);
-  };
+  }
+
+  // const handleCreateQuiz = () => {
+  //   setShowQuestionModal(false);
+  //   setShowQuizPublishedModal(true);
+  //   console.log("Creating quiz", questions);
+  // };
 
   //Question Modal -
   //for question numbers
@@ -69,7 +73,7 @@ const Dashboard = () => {
     }
     // setCurrentQuestionIndex(index-1)
   };
-  
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
   useEffect(() => {
@@ -128,20 +132,25 @@ const Dashboard = () => {
 
   const handleCreateQuizSubmit = () => {
     const quizData = {
-      currentQuestionIndex,
       pollQuestion,
       options,
       ansOption,
       timerType,
+      quizName,
+      quizType,
     };
     // Validate all fields are filled
-    const isPollQuestionFilled = pollQuestion[0].title !== "";
+    const isPollQuestionFilled = pollQuestion[0] !== "";
     const isOptionsFilled = options.some((option) =>
       option.some((item) => item.text !== "" || item.imageURL !== "")
     );
-    const isAnsOptionFilled = Object.values(ansOption).some((value) => value !== null);
-    const isTimerTypeFilled = Object.values(timerType).some((value) => value !== "");
-  
+    const isAnsOptionFilled = Object.values(ansOption).some(
+      (value) => value !== null
+    );
+    const isTimerTypeFilled = Object.values(timerType).some(
+      (value) => value !== ""
+    );
+
     if (!isPollQuestionFilled) {
       console.log("Poll question is not filled");
     }
@@ -157,7 +166,7 @@ const Dashboard = () => {
     if (!isTimerTypeFilled) {
       console.log("Timer type is not filled");
     }
-  
+
     if (
       !isPollQuestionFilled ||
       selectedOptionType === null ||
@@ -171,10 +180,27 @@ const Dashboard = () => {
       setShowQuizPublishedModal(true);
       setShowQuestionModal(false);
       console.log("Quiz Data to be saved:", quizData);
+
+      //delete data in states
+      setPollQuestion("");
+      setOptions(
+        Array(5)
+          .fill()
+          .map(() => [
+            { text: "", imageURL: "" },
+            { text: "", imageURL: "" },
+            { text: "", imageURL: "" },
+            { text: "", imageURL: "" },
+          ])
+      );
+      setAnsOption({});
+      setTimerType({});
+      setQuizName("");
+      setQuizType("");
+      setQuestions([1]);
     }
   };
-  
-  
+
   const handleOptionTextChange = (e, questionIndex, optionIndex) => {
     const updatedOptions = [...options];
     updatedOptions[questionIndex][optionIndex] = {
@@ -715,7 +741,7 @@ const Dashboard = () => {
                   </div>
                   <div className={styles.buttonContainer}>
                     <button
-                      // onClick={handleCreateQuiz}
+                      onClick={handleCancelQuizQuestionModal}
                       className={styles.cancelModalButton}
                     >
                       Cancel
@@ -734,7 +760,10 @@ const Dashboard = () => {
         )}
         {showQuizPublishedModal && (
           <div className={styles.modalOverlay} onClick={handleCancel}>
-            <div className={styles.modalPublished} onClick={(e) => e.stopPropagation()}>
+            <div
+              className={styles.modalPublished}
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className={styles.modalContent}>
                 <p
                   style={{
