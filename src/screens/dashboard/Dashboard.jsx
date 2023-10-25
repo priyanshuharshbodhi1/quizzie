@@ -86,9 +86,9 @@ const Dashboard = () => {
   // const [selectedOptionType, setSelectedOptionType] = useState(0);
   // const [ansOption, setAnsOption] = useState(null);
 
-  const handleRadioSelect = (index) => {
-    setAnsOption(index);
-  };
+  // const handleRadioSelect = (index) => {
+  //   setAnsOption(index);
+  // };
 
   const handleOptionTypeSelect = (index) => {
     setSelectedOptionType(index);
@@ -103,11 +103,31 @@ const Dashboard = () => {
   };
 
   const [options, setOptions] = useState(
-    Array(4).fill({ text: "", imageURL: "" })
+    Array(5)
+      .fill()
+      .map(() => [
+        { text: "", imageURL: "" },
+        { text: "", imageURL: "" },
+        { text: "", imageURL: "" },
+        { text: "", imageURL: "" },
+      ])
   );
+
   const [selectedOptionType, setSelectedOptionType] = useState(0);
-  const [ansOption, setAnsOption] = useState(null);
-  const [timerType, setTimerType] = useState("");
+  const [ansOption, setAnsOption] = useState({});
+  const handleRadioSelect = (index) => {
+    const updatedAnsOptions = { ...ansOption };
+    updatedAnsOptions[currentQuestionIndex] = index;
+    setAnsOption(updatedAnsOptions);
+  };
+
+  const [timerType, setTimerType] = useState({});
+
+  const handleTimerTypeSelect = (value) => {
+    const updatedTimerTypes = { ...timerType };
+    updatedTimerTypes[currentQuestionIndex] = value;
+    setTimerType(updatedTimerTypes);
+  };
 
   const handleCreateQuizSubmit = () => {
     const quizData = {
@@ -136,20 +156,23 @@ const Dashboard = () => {
     }
   };
 
-  const handleTimerTypeSelect = (value) => {
-    setTimerType(value);
-  };
+  // const handleTimerTypeSelect = (value) => {
+  //   setTimerType(value);
+  // };
 
-  const handleOptionTextChange = (e, index) => {
+  const handleOptionTextChange = (e, questionIndex, optionIndex) => {
     const updatedOptions = [...options];
-    updatedOptions[index] = { ...updatedOptions[index], text: e.target.value };
+    updatedOptions[questionIndex][optionIndex] = {
+      ...updatedOptions[questionIndex][optionIndex],
+      text: e.target.value,
+    };
     setOptions(updatedOptions);
   };
 
-  const handleOptionImageURLChange = (e, index) => {
+  const handleOptionImageURLChange = (e, questionIndex, optionIndex) => {
     const updatedOptions = [...options];
-    updatedOptions[index] = {
-      ...updatedOptions[index],
+    updatedOptions[questionIndex][optionIndex] = {
+      ...updatedOptions[questionIndex][optionIndex],
       imageURL: e.target.value,
     };
     setOptions(updatedOptions);
@@ -544,62 +567,95 @@ const Dashboard = () => {
                         <input
                           type="radio"
                           name="ansOption"
-                          checked={ansOption === index}
+                          checked={ansOption[currentQuestionIndex] === index}
                           onChange={() => handleRadioSelect(index)}
                         />
                         {selectedOptionType === 0 && (
                           <input
                             type="text"
-                            name="optionText"
-                            value={options[index].text}
+                            name={`optionText_${index}`}
+                            value={options[currentQuestionIndex][index].text}
                             placeholder="Option"
-                            onChange={(e) => handleOptionTextChange(e, index)}
+                            onChange={(e) =>
+                              handleOptionTextChange(
+                                e,
+                                currentQuestionIndex,
+                                index
+                              )
+                            }
                             className={`${styles.optionInput} ${
-                              ansOption === index ? styles.greenBackground : ""
-                            } `}
+                              ansOption &&
+                              ansOption[currentQuestionIndex] === index
+                                ? styles.greenBackground
+                                : ""
+                            }`}
                           />
                         )}
                         {selectedOptionType === 1 && (
                           <input
                             type="url"
-                            name="optionImageURL"
-                            value={options[index].imageURL}
+                            name={`optionImageURL_${index}`}
+                            value={
+                              options[currentQuestionIndex][index].imageURL
+                            }
                             placeholder="Option Image URL"
                             onChange={(e) =>
-                              handleOptionImageURLChange(e, index)
+                              handleOptionImageURLChange(
+                                e,
+                                currentQuestionIndex,
+                                index
+                              )
                             }
                             className={`${styles.optionInput} ${
-                              ansOption === index ? styles.greenBackground : ""
-                            } `}
+                              ansOption &&
+                              ansOption[currentQuestionIndex] === index
+                                ? styles.greenBackground
+                                : ""
+                            }`}
                           />
                         )}
                         {selectedOptionType === 2 && (
                           <>
                             <input
                               type="text"
-                              name="optionText"
-                              value={options[index].text}
+                              name={`optionText_${index}`}
+                              value={options[currentQuestionIndex][index].text}
                               placeholder="Option"
-                              onChange={(e) => handleOptionTextChange(e, index)}
-                              className={`${styles.optionInput} ${
-                                ansOption === index
-                                  ? styles.greenBackground
-                                  : ""
-                              } `}
-                            />
-                            <input
-                              type="url"
-                              name="optionImageURL"
-                              value={options[index].imageURL}
-                              placeholder="Option Image URL"
                               onChange={(e) =>
-                                handleOptionImageURLChange(e, index)
+                                handleOptionTextChange(
+                                  e,
+                                  currentQuestionIndex,
+                                  index
+                                )
                               }
                               className={`${styles.optionInput} ${
-                                ansOption === index
+                                ansOption &&
+                                ansOption[currentQuestionIndex] === index
                                   ? styles.greenBackground
                                   : ""
-                              } `}
+                              }`}
+                            />
+
+                            <input
+                              type="url"
+                              name={`optionImageURL_${index}`}
+                              value={
+                                options[currentQuestionIndex][index].imageURL
+                              }
+                              placeholder="Option Image URL"
+                              onChange={(e) =>
+                                handleOptionImageURLChange(
+                                  e,
+                                  currentQuestionIndex,
+                                  index
+                                )
+                              }
+                              className={`${styles.optionInput} ${
+                                ansOption &&
+                                ansOption[currentQuestionIndex] === index
+                                  ? styles.greenBackground
+                                  : ""
+                              }`}
                             />
                           </>
                         )}
@@ -614,6 +670,7 @@ const Dashboard = () => {
                         type="radio"
                         name="timerType"
                         value="5 Sec"
+                        checked={timerType[currentQuestionIndex] === "5 Sec"}
                         onChange={() => handleTimerTypeSelect("5 Sec")}
                       />{" "}
                       5 Sec
@@ -623,6 +680,7 @@ const Dashboard = () => {
                         type="radio"
                         name="timerType"
                         value="10 Sec"
+                        checked={timerType[currentQuestionIndex] === "10 Sec"}
                         onChange={() => handleTimerTypeSelect("10 Sec")}
                       />
                       10 Sec
@@ -632,6 +690,7 @@ const Dashboard = () => {
                         type="radio"
                         name="timerType"
                         value="OFF"
+                        checked={timerType[currentQuestionIndex] === "OFF"}
                         onChange={() => handleTimerTypeSelect("OFF")}
                       />{" "}
                       OFF
