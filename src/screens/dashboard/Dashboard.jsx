@@ -460,7 +460,7 @@ const Dashboard = () => {
         {showQuestionModal && (
           <div
             className={styles.questionModalOverlay}
-            onClick={handleCreateQuiz}
+            // onClick={handleCreateQuiz}
           >
             <div
               className={styles.questionModal}
@@ -484,7 +484,11 @@ const Dashboard = () => {
                   >
                     {questions.map((question, index) => (
                       <div
-                        className={styles.questionNo}
+                        className={`${styles.questionNo} ${
+                          index === currentQuestionIndex
+                            ? styles.activeQuestionNumber
+                            : ""
+                        }`}
                         key={index}
                         onClick={() => handleQuestionNoChange(index)}
                       >
