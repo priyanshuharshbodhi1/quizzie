@@ -40,3 +40,10 @@
     color: #60B84B;
     margin-left: .5rem;
   }
+
+
+  @media only screen and (min-width: 450px) {
+    .container {
+      width: 80%;
+    }
+  }
