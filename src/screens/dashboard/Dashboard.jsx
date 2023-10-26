@@ -268,6 +268,20 @@ const Dashboard = () => {
     setOptions(updatedOptions);
   };
 
+  //for analytics tab
+  const [quizzes, setQuizzes] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}/api/quizzes?email=${email}`)
+      .then((response) => {
+        setQuizzes(response.data);
+      })
+      .catch((error) => {
+        console.error("An error occurred while fetching the quizzes:", error);
+      });
+  },);
+
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
 
@@ -411,104 +425,27 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Quiz 1</td>
-                    <td>01 Sep, 2023</td>
-                    <td>345</td>
-                    <td>
-                      <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
-                    </td>
-                    <td>Question Wise Analysis</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Quiz 2</td>
-                    <td>04 Sep, 2023</td>
-                    <td>667</td>
-                    <td>
-                      <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
-                    </td>
-                    <td>Question Wise Analysis</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Quiz 3</td>
-                    <td>06 Sep, 2023</td>
-                    <td>1.6K</td>
-                    <td>
-                      <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
-                    </td>
-                    <td>Question Wise Analysis</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Quiz 4</td>
-                    <td>09 Sep, 2023</td>
-                    <td>789</td>
-                    <td>
-                      <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
-                    </td>
-                    <td>Question Wise Analysis</td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>Quiz 5</td>
-                    <td>11 Sep, 2023</td>
-                    <td>995</td>
-                    <td>
-                      <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
-                    </td>
-                    <td>Question Wise Analysis</td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>Quiz 6</td>
-                    <td>13 Sep, 2023</td>
-                    <td>2.5K</td>
-                    <td>
-                      <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
-                    </td>
-                    <td>Question Wise Analysis</td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>Quiz 7</td>
-                    <td>14 Sep, 2023</td>
-                    <td>231</td>
-                    <td>
-                      <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
-                    </td>
-                    <td>Question Wise Analysis</td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>Quiz 8</td>
-                    <td>17 Sep, 2023</td>
-                    <td>1.3K</td>
-                    <td>
-                      <img src={EditIcon} alt="" />
-                      <img src={DeleteIcon} alt="" onClick={handleDelete} />
-                      <img src={ShareIcon} alt="" onClick={notifyLinkCopied} />
-                    </td>
-                    <td>Question Wise Analysis</td>
-                  </tr>
+                  {quizzes.map((quiz, index) => (
+                    <tr key={quiz._id}>
+                      <td>{index + 1}</td>
+                      <td>{quiz.quizName}</td>
+                      <td>{new Date(quiz.date).toLocaleDateString()}</td>
+                      <td>Impression</td>
+                      <td>
+                        <img src={EditIcon} alt="" />
+                        <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                        <img
+                          src={ShareIcon}
+                          alt=""
+                          onClick={notifyLinkCopied}
+                        />
+                      </td>
+                      <td>Question Wise Analysis</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
+              <table></table>
             </div>
           )}
         </div>
