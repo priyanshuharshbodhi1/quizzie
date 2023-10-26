@@ -128,6 +128,8 @@ const Dashboard = () => {
 
   const [timerType, setTimerType] = useState({});
 
+  const [newQuizId, setNewQuizId] = useState(null);
+
   const handleTimerTypeSelect = (value) => {
     const updatedTimerTypes = { ...timerType };
     updatedTimerTypes[currentQuestionIndex] = value;
@@ -142,7 +144,7 @@ const Dashboard = () => {
     questions: questions,
     quizName,
     quizType,
-    email
+    email,
   };
 
   const handleCreateQuizSubmit = () => {
@@ -208,7 +210,7 @@ const Dashboard = () => {
 
       axios
         .post(
-          "http://localhost:3100/api/createquiz",
+          `${process.env.REACT_APP_API_BASE_URL}/api/createquiz`,
           { quizName, quizType: quizType, questions: questions, email },
           {
             headers: {
@@ -218,6 +220,8 @@ const Dashboard = () => {
         )
         .then((response) => {
           console.log("Quiz Data to be saved:", response.data);
+          setNewQuizId(response.data.id);
+          console.log(response.data.id);
         })
         .catch((error) => {
           console.error("An error occurred while saving the quiz:", error);
@@ -242,6 +246,7 @@ const Dashboard = () => {
       setQuestions([1]);
       setShowQuizPublishedModal(true);
       setShowQuestionModal(false);
+      setNewQuizId(null);
     }
   };
 
@@ -271,17 +276,16 @@ const Dashboard = () => {
   //getting the login credentials from the user
   const jwtToken = Cookies.get("jwt");
   axios
-    .get("http://localhost:3100/api/isloggedin", {
+    .get(`${process.env.REACT_APP_API_BASE_URL}/api/isloggedin`, {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
     })
     .then((response) => {
       if (response.data.isLoggedIn) {
-        setEmail(response.data.user.email)
+        setEmail(response.data.user.email);
         // console.log("User is logged in");
         // console.log("User email:", response.data.user.email);
-
       } else {
         console.log("User is not logged in");
       }
@@ -308,7 +312,19 @@ const Dashboard = () => {
       });
   };
 
-  const notifyLinkCopied = () =>
+  const notifyLinkCopied = () => {
+    if (newQuizId) {
+      const quizLink = `http://localhost:3000/quiz/${newQuizId}`;
+      navigator.clipboard
+        .writeText(quizLink)
+        .then(() => {
+          // The copy operation was successful
+        })
+        .catch((err) => {
+          // The copy operation failed
+          console.error("Failed to copy quiz link: ", err);
+        });
+    }
     toast.success("Link copied to Clipboard", {
       position: "top-right",
       autoClose: 1400,
@@ -319,6 +335,7 @@ const Dashboard = () => {
       progress: undefined,
       theme: "light",
     });
+  };
 
   return (
     <>
@@ -864,8 +881,11 @@ const Dashboard = () => {
                   Published!
                 </p>
                 <div className={styles.quizLink}>
-                  https://quizzie.com/dashboard
+                  {newQuizId
+                    ? `http://localhost:3000/quiz/${newQuizId}`
+                    : "Link not created, Please create a new Quiz"}
                 </div>
+
                 <div className={styles.buttonContainer}>
                   <button
                     // onClick={handleConfirm}
