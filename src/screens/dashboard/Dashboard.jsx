@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import ImpressionsIcon from "../../assets/images/impressions.svg";
 import DeleteIcon from "../../assets/images/delete-icon.svg";
@@ -27,6 +29,7 @@ const Dashboard = () => {
   };
 
   //for createQuiz Screen
+  const [email, setEmail] = useState("");
   const [quizName, setQuizName] = useState("");
   const [quizType, setQuizType] = useState("");
   const handleCancelQuizModal = () => {
@@ -139,9 +142,8 @@ const Dashboard = () => {
     questions: questions,
     quizName,
     quizType,
+    email
   };
-
-  
 
   const handleCreateQuizSubmit = () => {
     // const questions = {
@@ -194,48 +196,52 @@ const Dashboard = () => {
     ) {
       alert("Please fill all the fields before creating the quiz.");
     } else {
-
       const questions = [
         {
           pollQuestion,
           timerType,
           options,
-          ansOption
+          ansOption,
         },
         // More question objects here...
       ];
 
       axios
-        .post("http://localhost:3100/api/createquiz", { quizName, quizType:quizType, questions:questions }, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
+        .post(
+          "http://localhost:3100/api/createquiz",
+          { quizName, quizType: quizType, questions: questions, email },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
         .then((response) => {
           console.log("Quiz Data to be saved:", response.data);
-          // delete data in states
-          // setPollQuestion("");
-          // setOptions(
-          //   Array(5)
-          //     .fill()
-          //     .map(() => [
-          //       { text: "", imageURL: "" },
-          //       { text: "", imageURL: "" },
-          //       { text: "", imageURL: "" },
-          //       { text: "", imageURL: "" },
-          //     ])
-          // );
-          // setAnsOption({});
-          // setTimerType({});
-          // setQuizName("");
-          // setQuizType("");
-          // setQuestions([1]);
-          // setShowQuizPublishedModal(true);
-          // setShowQuestionModal(false);
         })
         .catch((error) => {
           console.error("An error occurred while saving the quiz:", error);
         });
+
+      // delete data in states
+      setPollQuestion("");
+      setOptions(
+        Array(5)
+          .fill()
+          .map(() => [
+            { text: "", imageURL: "" },
+            { text: "", imageURL: "" },
+            { text: "", imageURL: "" },
+            { text: "", imageURL: "" },
+          ])
+      );
+      setAnsOption({});
+      setTimerType({});
+      setQuizName("");
+      setQuizType("");
+      setQuestions([1]);
+      setShowQuizPublishedModal(true);
+      setShowQuestionModal(false);
     }
   };
 
@@ -259,6 +265,48 @@ const Dashboard = () => {
 
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  //getting the login credentials from the user
+  const jwtToken = Cookies.get("jwt");
+  axios
+    .get("http://localhost:3100/api/isloggedin", {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    })
+    .then((response) => {
+      if (response.data.isLoggedIn) {
+        setEmail(response.data.user.email)
+        // console.log("User is logged in");
+        // console.log("User email:", response.data.user.email);
+
+      } else {
+        console.log("User is not logged in");
+      }
+    })
+    .catch((error) => {
+      console.error("An error occurred:", error);
+    });
+
+  const handleLogout = () => {
+    axios
+      .post(`${process.env.REACT_APP_API_BASE_URL}/api/logout`, null, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          Cookies.remove("jwt");
+          // setIsLoggedIn(false);
+          // console.log("User is logged out");
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during logout:", error);
+      });
+  };
 
   const notifyLinkCopied = () =>
     toast.success("Link copied to Clipboard", {
@@ -304,7 +352,9 @@ const Dashboard = () => {
             </button>
           </div>
           <hr />
-          <button className={styles.logoutBtn}>LOGOUT</button>
+          <button className={styles.logoutBtn} onClick={handleLogout}>
+            LOGOUT
+          </button>
         </div>
         <div className={styles.subContainer}>
           {activeScreen === "dashboard" && (
