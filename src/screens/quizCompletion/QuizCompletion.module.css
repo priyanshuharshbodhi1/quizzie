@@ -42,8 +42,14 @@
   }
 
 
-  @media only screen and (min-width: 450px) {
-    .container {
-      width: 80%;
+
+  @media (max-width: 700px) {
+    .thankYouContainer{
+      width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    border-radius: 0;
+    font-size: 2rem;
+    padding: 0 1rem;
+    /* white-space: nowrap; */
     }
   }
