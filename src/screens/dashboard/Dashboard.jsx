@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "./Dashboard.module.css";
 import ImpressionsIcon from "../../assets/images/impressions.svg";
 import DeleteIcon from "../../assets/images/delete-icon.svg";
@@ -43,7 +44,7 @@ const Dashboard = () => {
 
   const handleCancelQuizQuestionModal = () => {
     setShowQuestionModal(false);
-  }
+  };
 
   // const handleCreateQuiz = () => {
   //   setShowQuestionModal(false);
@@ -131,11 +132,15 @@ const Dashboard = () => {
   };
 
   const handleCreateQuizSubmit = () => {
+    const questions = {
+    pollQuestion
+    };
     const quizData = {
-      pollQuestion,
-      options,
-      ansOption,
-      timerType,
+      // pollQuestion,
+      // options,
+      // ansOption,
+      // timerType,
+      questions,
       quizName,
       quizType,
     };
@@ -176,28 +181,33 @@ const Dashboard = () => {
     ) {
       alert("Please fill all the fields before creating the quiz.");
     } else {
-      // Save the data in MongoDB or perform any other required action
-      setShowQuizPublishedModal(true);
-      setShowQuestionModal(false);
-      console.log("Quiz Data to be saved:", quizData);
-
-      //delete data in states
-      setPollQuestion("");
-      setOptions(
-        Array(5)
-          .fill()
-          .map(() => [
-            { text: "", imageURL: "" },
-            { text: "", imageURL: "" },
-            { text: "", imageURL: "" },
-            { text: "", imageURL: "" },
-          ])
-      );
-      setAnsOption({});
-      setTimerType({});
-      setQuizName("");
-      setQuizType("");
-      setQuestions([1]);
+      axios
+        .post(`${process.env.REACT_APP_API_BASE_UR}/api/create-quiz`, quizData)
+        .then((response) => {
+          console.log("Quiz Data to be saved:", response.data);
+          // delete data in states
+          setPollQuestion("");
+          setOptions(
+            Array(5)
+              .fill()
+              .map(() => [
+                { text: "", imageURL: "" },
+                { text: "", imageURL: "" },
+                { text: "", imageURL: "" },
+                { text: "", imageURL: "" },
+              ])
+          );
+          setAnsOption({});
+          setTimerType({});
+          setQuizName("");
+          setQuizType("");
+          setQuestions([1]);
+          setShowQuizPublishedModal(true);
+          setShowQuestionModal(false);
+        })
+        .catch((error) => {
+          console.error("An error occurred while saving the quiz:", error);
+        });
     }
   };
 
