@@ -131,22 +131,26 @@ const Dashboard = () => {
     setTimerType(updatedTimerTypes);
   };
 
+  const quizData = {
+    pollQuestion,
+    options,
+    ansOption,
+    timerType,
+    questions: questions,
+    quizName,
+    quizType,
+  };
+
+  
+
   const handleCreateQuizSubmit = () => {
-    const questions = {
-    pollQuestion:pollQuestion,
-    // ansOption,
-    timerType: timerType,
-    };
-    const quizData = {
-      // pollQuestion,
-      // options,
-      // ansOption,
-      // timerType,
-      questions: questions,
-      quizName: quizName,
-      quizType: quizType,
-    };
-    console.log("this is the quiz data",quizData);
+    // const questions = {
+    // pollQuestion:pollQuestion,
+    // // ansOption,
+    // timerType: timerType,
+    // };
+
+    console.log("this is the quiz data", quizData);
 
     // Validate all fields are filled
     const isPollQuestionFilled = pollQuestion[0] !== "";
@@ -190,8 +194,23 @@ const Dashboard = () => {
     ) {
       alert("Please fill all the fields before creating the quiz.");
     } else {
+
+      const questions = [
+        {
+          pollQuestion,
+          timerType,
+          options,
+          ansOption
+        },
+        // More question objects here...
+      ];
+
       axios
-        .post("http://localhost:3100/api/createquiz", quizData)
+        .post("http://localhost:3100/api/createquiz", { quizName, quizType:quizType, questions:questions }, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
         .then((response) => {
           console.log("Quiz Data to be saved:", response.data);
           // delete data in states
