@@ -133,17 +133,21 @@ const Dashboard = () => {
 
   const handleCreateQuizSubmit = () => {
     const questions = {
-    pollQuestion
+    pollQuestion:pollQuestion,
+    // ansOption,
+    timerType: timerType,
     };
     const quizData = {
       // pollQuestion,
       // options,
       // ansOption,
       // timerType,
-      questions,
-      quizName,
-      quizType,
+      questions: questions,
+      quizName: quizName,
+      quizType: quizType,
     };
+    console.log("this is the quiz data",quizData);
+
     // Validate all fields are filled
     const isPollQuestionFilled = pollQuestion[0] !== "";
     const isOptionsFilled = options.some((option) =>
@@ -172,6 +176,11 @@ const Dashboard = () => {
       console.log("Timer type is not filled");
     }
 
+    if (!quizName || !quizType) {
+      alert("Please fill in the Quiz Name and Quiz Type");
+      return;
+    }
+
     if (
       !isPollQuestionFilled ||
       selectedOptionType === null ||
@@ -182,28 +191,28 @@ const Dashboard = () => {
       alert("Please fill all the fields before creating the quiz.");
     } else {
       axios
-        .post(`${process.env.REACT_APP_API_BASE_UR}/api/create-quiz`, quizData)
+        .post("http://localhost:3100/api/createquiz", quizData)
         .then((response) => {
           console.log("Quiz Data to be saved:", response.data);
           // delete data in states
-          setPollQuestion("");
-          setOptions(
-            Array(5)
-              .fill()
-              .map(() => [
-                { text: "", imageURL: "" },
-                { text: "", imageURL: "" },
-                { text: "", imageURL: "" },
-                { text: "", imageURL: "" },
-              ])
-          );
-          setAnsOption({});
-          setTimerType({});
-          setQuizName("");
-          setQuizType("");
-          setQuestions([1]);
-          setShowQuizPublishedModal(true);
-          setShowQuestionModal(false);
+          // setPollQuestion("");
+          // setOptions(
+          //   Array(5)
+          //     .fill()
+          //     .map(() => [
+          //       { text: "", imageURL: "" },
+          //       { text: "", imageURL: "" },
+          //       { text: "", imageURL: "" },
+          //       { text: "", imageURL: "" },
+          //     ])
+          // );
+          // setAnsOption({});
+          // setTimerType({});
+          // setQuizName("");
+          // setQuizType("");
+          // setQuestions([1]);
+          // setShowQuizPublishedModal(true);
+          // setShowQuestionModal(false);
         })
         .catch((error) => {
           console.error("An error occurred while saving the quiz:", error);
