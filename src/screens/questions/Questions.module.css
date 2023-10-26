@@ -1,0 +1,51 @@
+.questionContent {
+  background: #ffffff;
+  height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.timer {
+  color: rgb(248, 66, 66);
+}
+
+.pollQuestion {
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: 550;
+  margin-top: 1.5rem;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding: 1rem;
+}
+
+.option {
+  border-radius: 0.625rem;
+  background: #f0f0f0;
+  padding: 1rem;
+  text-align: center;
+}
+
+.nextBtn {
+  border-radius: 0.625rem;
+  background: #60b84b;
+  border: none;
+  padding: 0.55rem 3rem;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  font-size: 1.3rem;
+}
