@@ -9,6 +9,18 @@ const Question = () => {
   const navigate = useNavigate();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const handleOptionClick = (index) => {
+    setSelectedOptionIndex(index);
+
+    const isCorrect =
+      quiz.questions[0].ansOptions[currentQuestionIndex] === index;
+    const newUserAnswers = [...userAnswers];
+    newUserAnswers[currentQuestionIndex] = { userAnswer: index, isCorrect };
+    setUserAnswers(newUserAnswers);
+  };
+  // console.log(userAnswers);
 
   useEffect(() => {
     axios
@@ -41,7 +53,7 @@ const Question = () => {
         <div className={styles.questionContent}>
           <div className={styles.header}>
             <div className={styles.questionNumber}>
-              {currentQuestionIndex + 1}/{pollQuestionsCount}
+              0{currentQuestionIndex + 1}/0{pollQuestionsCount}
             </div>
             <div className={styles.timer}>
               {quiz.quizType !== "Poll Type" &&
@@ -52,13 +64,31 @@ const Question = () => {
             {quiz.questions[0].pollQuestion[currentQuestionIndex]}
           </div>
           <div className={styles.options}>
-            {quiz.questions[0].options[currentQuestionIndex].map(
-              (option, index) => (
-                <div key={index} className={styles.option}>
-                  {option.text}
-                </div>
-              )
-            )}
+            {quiz &&
+              quiz.questions &&
+              quiz.questions[0] &&
+              quiz.questions[0].options &&
+              quiz.questions[0].options[currentQuestionIndex] &&
+              quiz.questions[0].options[currentQuestionIndex].map(
+                (option, index) => {
+                  if (option && option.text.trim() !== "") {
+                    return (
+                      <div
+                        key={index}
+                        className={`${styles.option} ${
+                          index === selectedOptionIndex
+                            ? styles.borderColor
+                            : ""
+                        }`}
+                        onClick={() => handleOptionClick(index)}
+                      >
+                        {option.text}
+                      </div>
+                    );
+                  }
+                  return null;
+                }
+              )}
           </div>
           <button className={styles.nextBtn} onClick={handleNext}>
             {currentQuestionIndex === pollQuestionsCount - 1

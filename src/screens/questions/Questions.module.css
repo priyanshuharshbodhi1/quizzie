@@ -43,6 +43,10 @@
   text-align: center;
 }
 
+.selectedOption{
+  border: 2px solid #5076FF;
+}
+
 .nextBtn {
   border-radius: 0.625rem;
   background: #60b84b;
