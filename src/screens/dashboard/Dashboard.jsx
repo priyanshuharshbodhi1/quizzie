@@ -80,18 +80,14 @@ const Dashboard = () => {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
-  useEffect(() => {
-    console.log(currentQuestionIndex + 1);
-  }, [currentQuestionIndex]);
-
   // Update question number change handler to set current question index
   const handleQuestionNoChange = (index) => {
     setCurrentQuestionIndex(index);
   };
 
-  useEffect(() => {
-    console.log(currentQuestionIndex + 1);
-  }, [currentQuestionIndex]);
+  // useEffect(() => {
+  //   console.log(currentQuestionIndex + 1);
+  // }, [currentQuestionIndex]);
 
   //for questions and options
   const [showQuestionModal, setShowQuestionModal] = useState(false);
@@ -198,6 +194,8 @@ const Dashboard = () => {
     ) {
       alert("Please fill all the fields before creating the quiz.");
     } else {
+       console.log(options);
+
       const questions = [
         {
           pollQuestion,
@@ -211,7 +209,7 @@ const Dashboard = () => {
       axios
         .post(
           `${process.env.REACT_APP_API_BASE_URL}/api/createquiz`,
-          { quizName, quizType: quizType, questions: questions, email },
+          { quizName, quizType, questions, email },
           {
             headers: {
               "Content-Type": "application/json",
@@ -219,9 +217,9 @@ const Dashboard = () => {
           }
         )
         .then((response) => {
-          console.log("Quiz Data to be saved:", response.data);
+          // console.log("Quiz Data to be saved:", response.data);
           setNewQuizId(response.data.id);
-          console.log(response.data.id);
+          // console.log(response.data.id);
         })
         .catch((error) => {
           console.error("An error occurred while saving the quiz:", error);
@@ -280,7 +278,7 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("An error occurred while fetching the quizzes:", error);
       });
-  },);
+  },[email]);
 
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
