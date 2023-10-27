@@ -182,10 +182,10 @@ const Dashboard = () => {
     const isAnsOptionFilled = Object.values(ansOption).some(
       (value) => value !== null
     );
-    const isTimerTypeFilled = Object.values(timerType).some(
-      (value) => value !== ""
-    );
-
+    const isTimerTypeFilled =
+      quizType !== "Poll Type"
+        ? Object.values(timerType).some((value) => value !== "")
+        : true;
     if (!isPollQuestionFilled) {
       console.log("Poll question is not filled");
     }
@@ -212,7 +212,7 @@ const Dashboard = () => {
       selectedOptionType === null ||
       !isOptionsFilled ||
       !isAnsOptionFilled ||
-      !isTimerTypeFilled
+      (quizType !== "Poll Type" && !isTimerTypeFilled)
     ) {
       alert("Please fill all the fields before creating the quiz.");
     } else {
@@ -773,39 +773,44 @@ const Dashboard = () => {
                     ))}
                   </div>
 
-                  <div className={styles.timerType} style={{ display: "flex" }}>
-                    <div>Timer Type</div>
-                    <label className={styles.modalLabel}>
-                      <input
-                        type="radio"
-                        name="timerType"
-                        value="5 Sec"
-                        checked={timerType[currentQuestionIndex] === "5 Sec"}
-                        onChange={() => handleTimerTypeSelect("5 Sec")}
-                      />{" "}
-                      5 Sec
-                    </label>
-                    <label className={styles.modalLabel}>
-                      <input
-                        type="radio"
-                        name="timerType"
-                        value="10 Sec"
-                        checked={timerType[currentQuestionIndex] === "10 Sec"}
-                        onChange={() => handleTimerTypeSelect("10 Sec")}
-                      />
-                      10 Sec
-                    </label>
-                    <label className={styles.modalLabel}>
-                      <input
-                        type="radio"
-                        name="timerType"
-                        value="OFF"
-                        checked={timerType[currentQuestionIndex] === "OFF"}
-                        onChange={() => handleTimerTypeSelect("OFF")}
-                      />{" "}
-                      OFF
-                    </label>
-                  </div>
+                  {quizType !== "Poll Type" && (
+                    <div
+                      className={styles.timerType}
+                      style={{ display: "flex" }}
+                    >
+                      <div>Timer Type</div>
+                      <label className={styles.modalLabel}>
+                        <input
+                          type="radio"
+                          name="timerType"
+                          value="5 Sec"
+                          checked={timerType[currentQuestionIndex] === "5 Sec"}
+                          onChange={() => handleTimerTypeSelect("5 Sec")}
+                        />{" "}
+                        5 Sec
+                      </label>
+                      <label className={styles.modalLabel}>
+                        <input
+                          type="radio"
+                          name="timerType"
+                          value="10 Sec"
+                          checked={timerType[currentQuestionIndex] === "10 Sec"}
+                          onChange={() => handleTimerTypeSelect("10 Sec")}
+                        />
+                        10 Sec
+                      </label>
+                      <label className={styles.modalLabel}>
+                        <input
+                          type="radio"
+                          name="timerType"
+                          value="OFF"
+                          checked={timerType[currentQuestionIndex] === "OFF"}
+                          onChange={() => handleTimerTypeSelect("OFF")}
+                        />{" "}
+                        OFF
+                      </label>
+                    </div>
+                  )}
                   <div className={styles.buttonContainer}>
                     <button
                       onClick={handleCancelQuizQuestionModal}
