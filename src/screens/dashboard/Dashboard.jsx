@@ -156,25 +156,19 @@ const Dashboard = () => {
     setTimerType(updatedTimerTypes);
   };
 
-  const quizData = {
-    pollQuestion,
-    options,
-    ansOption,
-    timerType,
-    questions: questions,
-    quizName,
-    quizType,
-    email,
-  };
+  // const quizData = {
+  //   pollQuestion,
+  //   options,
+  //   ansOption,
+  //   timerType,
+  //   questions: questions,
+  //   quizName,
+  //   quizType,
+  //   email,
+  // };
 
   const handleCreateQuizSubmit = () => {
-    // const questions = {
-    // pollQuestion:pollQuestion,
-    // // ansOption,
-    // timerType: timerType,
-    // };
-
-    console.log("this is the quiz data", quizData);
+    // console.log("this is the quiz data", quizData);
 
     // Validate all fields are filled
     const isPollQuestionFilled = pollQuestion[0] !== "";
@@ -304,8 +298,7 @@ const Dashboard = () => {
         console.error("An error occurred while fetching the quizzes:", error);
       });
   }, [email]);
-  console.log(quizzes)
-
+  console.log("analytics", quizzes);
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
 
@@ -348,6 +341,29 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error during logout:", error);
       });
+  };
+
+  const handleShareIconClick = (quizId) => {
+    const quizLink = `http://localhost:3000/quiz/${quizId}`;
+    navigator.clipboard
+      .writeText(quizLink)
+      .then(() => {
+        // alert("Quiz link copied to clipboard");
+      })
+      .catch((error) => {
+        console.error("Error copying quiz link to clipboard:", error);
+      });
+
+    toast.success("Link copied to Clipboard", {
+      position: "top-right",
+      autoClose: 1400,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   const notifyLinkCopied = () => {
@@ -454,9 +470,15 @@ const Dashboard = () => {
                       <td>{index + 1}</td>
                       <td>{quiz.quizName}</td>
                       <td>{new Date(quiz.date).toLocaleDateString()}</td>
-                      <td>Impression</td>
+                      <td>{quiz.impressions}</td>
                       <td>
-                        <img src={EditIcon} alt="" />
+                        <img
+                          src={EditIcon}
+                          alt=""
+                          onClick={() =>
+                            alert("This Feature is under development...")
+                          }
+                        />
                         <img
                           src={DeleteIcon}
                           alt=""
@@ -465,7 +487,7 @@ const Dashboard = () => {
                         <img
                           src={ShareIcon}
                           alt=""
-                          onClick={notifyLinkCopied}
+                          onClick={() => handleShareIconClick(quiz._id)}
                         />
                       </td>
                       <td>Question Wise Analysis</td>
