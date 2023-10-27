@@ -110,7 +110,16 @@ const Question = () => {
                         }`}
                         onClick={() => handleOptionClick(index)}
                       >
-                        {option.text}
+                        <div>
+                          <img
+                          className={styles.optionImage}
+                            style={{
+                              backgroundImage: `url(${option.imageURL})`,
+                            }}
+                            alt=""
+                          />
+                        </div>
+                        <div>{option.text}</div>
                       </div>
                     );
                   }
