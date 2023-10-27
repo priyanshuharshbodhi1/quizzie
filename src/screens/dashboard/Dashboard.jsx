@@ -14,14 +14,28 @@ const Dashboard = () => {
   const [activeScreen, setActiveScreen] = useState("dashboard");
 
   const [showModal, setShowModal] = useState(false);
-
-  const handleDelete = () => {
+  const handleDeleteIconClick = (quizId) => {
+    setQuizIdToDelete(quizId);
+    // Show the confirmation modal
     setShowModal(true);
   };
+  const [quizIdToDelete, setQuizIdToDelete] = useState(null);
 
-  const handleConfirm = () => {
-    setShowModal(false);
+  const handleDelete = () => {
+    // Delete the quiz
+    axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizIdToDelete}`)
+      .then(response => {
+        // Remove the deleted quiz from the state
+        setQuizzes(quizzes.filter(quiz => quiz._id !== quizIdToDelete));
+        // Hide the confirmation modal
+        setShowModal(false);
+      })
+      .catch(error => console.error('Error deleting quiz:', error));
   };
+
+  // const handleConfirm = () => {
+  //   setShowModal(false);
+  // };
 
   const handleCancel = () => {
     setShowModal(false);
@@ -194,7 +208,7 @@ const Dashboard = () => {
     ) {
       alert("Please fill all the fields before creating the quiz.");
     } else {
-       console.log(options);
+      console.log(options);
 
       const questions = [
         {
@@ -278,7 +292,7 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("An error occurred while fetching the quizzes:", error);
       });
-  },[email]);
+  }, [email]);
 
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
@@ -431,7 +445,11 @@ const Dashboard = () => {
                       <td>Impression</td>
                       <td>
                         <img src={EditIcon} alt="" />
-                        <img src={DeleteIcon} alt="" onClick={handleDelete} />
+                        <img
+                          src={DeleteIcon}
+                          alt=""
+                          onClick={() => handleDeleteIconClick(quiz._id)}
+                        />
                         <img
                           src={ShareIcon}
                           alt=""
@@ -462,7 +480,7 @@ const Dashboard = () => {
                 </p>
                 <div className={styles.buttonContainer}>
                   <button
-                    onClick={handleConfirm}
+                    onClick={handleDelete}
                     className={styles.confirmDeleteModalButton}
                   >
                     Confirm Delete

@@ -32,7 +32,7 @@ const Question = () => {
   }
 
   const pollQuestionsCount = Object.keys(quiz.questions[0].pollQuestion).length;
-  console.log(pollQuestionsCount);
+  // console.log(pollQuestionsCount);
 
   return (
     <>
