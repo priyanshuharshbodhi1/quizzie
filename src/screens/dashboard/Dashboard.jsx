@@ -23,14 +23,17 @@ const Dashboard = () => {
 
   const handleDelete = () => {
     // Delete the quiz
-    axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizIdToDelete}`)
-      .then(response => {
+    axios
+      .delete(
+        `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizIdToDelete}`
+      )
+      .then((response) => {
         // Remove the deleted quiz from the state
-        setQuizzes(quizzes.filter(quiz => quiz._id !== quizIdToDelete));
+        setQuizzes(quizzes.filter((quiz) => quiz._id !== quizIdToDelete));
         // Hide the confirmation modal
         setShowModal(false);
       })
-      .catch(error => console.error('Error deleting quiz:', error));
+      .catch((error) => console.error("Error deleting quiz:", error));
   };
 
   // const handleConfirm = () => {
@@ -75,6 +78,7 @@ const Dashboard = () => {
   const handleAddQuestion = () => {
     if (questions.length < 5) {
       setQuestions([...questions, { title: "" }]);
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
@@ -93,6 +97,10 @@ const Dashboard = () => {
   };
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  useEffect(() => {
+    // Perform side effects here when currentQuestionIndex changes
+  }, [currentQuestionIndex]);
 
   // Update question number change handler to set current question index
   const handleQuestionNoChange = (index) => {
@@ -256,6 +264,7 @@ const Dashboard = () => {
       setQuizName("");
       setQuizType("");
       setQuestions([1]);
+      setCurrentQuestionIndex(0);
       setShowQuizPublishedModal(true);
       setShowQuestionModal(false);
       setNewQuizId(null);

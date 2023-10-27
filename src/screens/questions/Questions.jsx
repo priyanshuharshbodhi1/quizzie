@@ -33,6 +33,7 @@ const Question = () => {
 
   const pollQuestionsCount = Object.keys(quiz.questions[0].pollQuestion).length;
   // console.log(pollQuestionsCount);
+  console.log(quiz.questions[0].options[currentQuestionIndex]);
 
   return (
     <>
@@ -42,32 +43,22 @@ const Question = () => {
             <div className={styles.questionNumber}>
               {currentQuestionIndex + 1}/{pollQuestionsCount}
             </div>
-            <div className={styles.timer}>00:00s {quiz.questions[0].timerType[currentQuestionIndex]}</div>
+            <div className={styles.timer}>
+              {quiz.quizType !== "Poll Type" &&
+                quiz.questions[0].timerType[currentQuestionIndex]}
+            </div>
           </div>
           <div className={styles.pollQuestion}>
             {quiz.questions[0].pollQuestion[currentQuestionIndex]}
-            {/* {quiz.questions.pollQuestion[currentQuestionIndex]} */}
           </div>
           <div className={styles.options}>
-            {quiz.questions[0].options.map((option, index) => (
-              <div key={index} className={styles.option}>
-                {option.text} <img src={option.imageURL} alt="" />
-              </div>
-            ))}
-
-            {/* {quiz.questions[currentQuestionIndex].options.map(
+            {quiz.questions[0].options[currentQuestionIndex].map(
               (option, index) => (
-                <div key={index}>
-                  <input
-                    type="radio"
-                    id={`option${index}`}
-                    name="option"
-                    value={option._id} // Changed this line
-                  />
-                  <label htmlFor={`option${index}`}>{option._id}</label>
+                <div key={index} className={styles.option}>
+                  {option.text}
                 </div>
               )
-            )} */}
+            )}
           </div>
           <button className={styles.nextBtn} onClick={handleNext}>
             {currentQuestionIndex === pollQuestionsCount - 1

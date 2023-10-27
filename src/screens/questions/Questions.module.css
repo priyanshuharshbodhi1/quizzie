@@ -1,3 +1,7 @@
+.mainContainer{
+  min-height: 90vh;
+}
+
 .questionContent {
   background: #ffffff;
   height: 100vh;
