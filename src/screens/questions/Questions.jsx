@@ -85,7 +85,7 @@ const Question = () => {
             <div className={styles.timer}>
               {quiz.quizType !== "Poll Type" &&
                 quiz.questions[0].timerType[currentQuestionIndex] !== "OFF" &&
-                `${timer} Sec`}
+                `00:0${timer} Sec`}
             </div>
           </div>
           <div className={styles.pollQuestion}>

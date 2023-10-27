@@ -14,16 +14,6 @@ const Dashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  //for checking if the user is logged in
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_API_BASE_URL}/api/isLoggedIn`)
-  //     .then((response) => {
-  //       setIsLoggedIn(response.data.isLoggedIn);
-  //     })
-  //     .catch((error) => console.error("Error checking login status:", error));
-  // }, []);
-
   const [activeScreen, setActiveScreen] = useState("dashboard");
 
   const [showModal, setShowModal] = useState(false);
@@ -491,7 +481,7 @@ const Dashboard = () => {
                           src={EditIcon}
                           alt=""
                           onClick={() =>
-                            alert("This Feature is under development...")
+                            alert("This Feature is under development, Please try again later...")
                           }
                         />
                         <img
