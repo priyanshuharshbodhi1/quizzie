@@ -7,19 +7,22 @@ const Question = () => {
   const [quiz, setQuiz] = useState(null);
   const { quizId } = useParams();
   const navigate = useNavigate();
+  console.log(quizId);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [userAnswers, setUserAnswers] = useState([]);
+
   const handleOptionClick = (index) => {
     setSelectedOptionIndex(index);
 
     const isCorrect =
-      quiz.questions[0].ansOptions[currentQuestionIndex] === index;
+      quiz.questions[0].ansOption[currentQuestionIndex] === index; // Corrected typo
     const newUserAnswers = [...userAnswers];
     newUserAnswers[currentQuestionIndex] = { userAnswer: index, isCorrect };
     setUserAnswers(newUserAnswers);
   };
+
   // console.log(userAnswers);
 
   useEffect(() => {
@@ -29,10 +32,19 @@ const Question = () => {
         setQuiz(response.data);
       })
       .catch((error) => console.error("Error fetching quiz:", error));
+
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/impression`
+    //   )
+    //   .catch((error) => console.error("Error recording impression:", error));
   }, [quizId]);
 
   const handleNext = () => {
     if (currentQuestionIndex === pollQuestionsCount - 1) {
+      axios
+      .post(`${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/impression`)
+      .catch((error) => console.error("Error recording impression:", error));
       navigate("/quizcompleted");
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -77,7 +89,7 @@ const Question = () => {
                         key={index}
                         className={`${styles.option} ${
                           index === selectedOptionIndex
-                            ? styles.borderColor
+                            ? styles.selectedOption
                             : ""
                         }`}
                         onClick={() => handleOptionClick(index)}
