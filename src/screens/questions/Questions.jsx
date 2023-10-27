@@ -7,11 +7,11 @@ const Question = () => {
   const [quiz, setQuiz] = useState(null);
   const { quizId } = useParams();
   const navigate = useNavigate();
-  console.log(quizId);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [timer, setTimer] = useState(null);
 
   const handleOptionClick = (index) => {
     setSelectedOptionIndex(index);
@@ -23,7 +23,26 @@ const Question = () => {
     setUserAnswers(newUserAnswers);
   };
 
-  // console.log(userAnswers);
+  useEffect(() => {
+    if (
+      quiz &&
+      quiz.quizType !== "Poll Type" &&
+      quiz.questions[0].timerType[currentQuestionIndex] !== "OFF"
+    ) {
+      setTimer(parseInt(quiz.questions[0].timerType[currentQuestionIndex], 10));
+      const countdown = setInterval(() => {
+        setTimer((prevTimer) => {
+          if (prevTimer === 1) {
+            clearInterval(countdown);
+            return 0;
+          } else {
+            return prevTimer - 1;
+          }
+        });
+      }, 1000);
+      return () => clearInterval(countdown);
+    }
+  }, [currentQuestionIndex, quiz]);
 
   useEffect(() => {
     axios
@@ -32,19 +51,15 @@ const Question = () => {
         setQuiz(response.data);
       })
       .catch((error) => console.error("Error fetching quiz:", error));
-
-    // axios
-    //   .post(
-    //     `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/impression`
-    //   )
-    //   .catch((error) => console.error("Error recording impression:", error));
   }, [quizId]);
 
   const handleNext = () => {
     if (currentQuestionIndex === pollQuestionsCount - 1) {
       axios
-      .post(`${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/impression`)
-      .catch((error) => console.error("Error recording impression:", error));
+        .post(
+          `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/impression`
+        )
+        .catch((error) => console.error("Error recording impression:", error));
       navigate("/quizcompleted");
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -69,7 +84,8 @@ const Question = () => {
             </div>
             <div className={styles.timer}>
               {quiz.quizType !== "Poll Type" &&
-                quiz.questions[0].timerType[currentQuestionIndex]}
+                quiz.questions[0].timerType[currentQuestionIndex] !== "OFF" &&
+                `${timer} Sec`}
             </div>
           </div>
           <div className={styles.pollQuestion}>

@@ -53,6 +53,8 @@ const Dashboard = () => {
     setActiveScreen("dashboard");
   };
 
+  // console.log(email)
+
   const handleShowQuizQueModal = () => {
     if (quizName && quizType) {
       setShowQuestionModal(true);
@@ -302,6 +304,7 @@ const Dashboard = () => {
         console.error("An error occurred while fetching the quizzes:", error);
       });
   }, [email]);
+  console.log(quizzes)
 
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
