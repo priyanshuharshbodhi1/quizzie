@@ -110,15 +110,17 @@ const Question = () => {
                         }`}
                         onClick={() => handleOptionClick(index)}
                       >
-                        <div>
-                          <img
-                          className={styles.optionImage}
-                            style={{
-                              backgroundImage: `url(${option.imageURL})`,
-                            }}
-                            alt=""
-                          />
-                        </div>
+                        {option.imageURL && option.imageURL.trim() !== "" ? (
+                          <div>
+                            <img
+                              className={styles.optionImage}
+                              style={{
+                                backgroundImage: `url(${option.imageURL})`,
+                              }}
+                              alt=""
+                            />
+                          </div>
+                        ) : null}
                         <div>{option.text}</div>
                       </div>
                     );

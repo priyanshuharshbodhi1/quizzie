@@ -11,6 +11,19 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Dashboard = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  //for checking if the user is logged in
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_API_BASE_URL}/api/isLoggedIn`)
+  //     .then((response) => {
+  //       setIsLoggedIn(response.data.isLoggedIn);
+  //     })
+  //     .catch((error) => console.error("Error checking login status:", error));
+  // }, []);
+
   const [activeScreen, setActiveScreen] = useState("dashboard");
 
   const [showModal, setShowModal] = useState(false);
@@ -302,8 +315,6 @@ const Dashboard = () => {
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
 
-  const navigate = useNavigate();
-
   //getting the login credentials from the user
   const jwtToken = Cookies.get("jwt");
   axios
@@ -315,6 +326,7 @@ const Dashboard = () => {
     .then((response) => {
       if (response.data.isLoggedIn) {
         setEmail(response.data.user.email);
+        setIsLoggedIn(response.data.isLoggedIn)
         // console.log("User is logged in");
         // console.log("User email:", response.data.user.email);
       } else {
@@ -423,8 +435,11 @@ const Dashboard = () => {
             </button>
           </div>
           <hr />
-          <button className={styles.logoutBtn} onClick={handleLogout}>
-            LOGOUT
+          <button
+            className={styles.logoutBtn}
+            onClick={isLoggedIn ? handleLogout : () => navigate("/")}
+          >
+            {isLoggedIn ? "LOGOUT" : "LOG IN"}
           </button>
         </div>
         <div className={styles.subContainer}>
