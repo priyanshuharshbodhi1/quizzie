@@ -572,12 +572,17 @@ const Dashboard = () => {
                             onClick={() => handleShareIconClick(quiz._id)}
                           />
                         </td>
-                        <td>Question Wise Analysis</td>
+                        <td
+                          onClick={() => navigate(`/quizanalysis/${quiz._id}`)}
+                          style={{cursor: 'pointer', textDecoration:"underline"}}
+                        >
+                          Question Wise Analysis
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-                <table></table>
+                {/* <table></table> */}
               </div>
             ))}
         </div>

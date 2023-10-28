@@ -35,8 +35,8 @@ const router = createBrowserRouter([
     element: <ItemNotFound />,
   },
   {
-    path: "/quizanalysis",
-    element: <QuizAnalysis/>,
+    path: "/quizanalysis/:quizId",
+    element: <QuizAnalysis />,
   },
 ]);
 
