@@ -434,8 +434,8 @@ const Dashboard = () => {
       });
   }, [email]);
 
-  console.log(email);
-  console.log(trendingQuizzes);
+  // console.log(email);
+  // console.log(trendingQuizzes);
 
   return (
     <>
@@ -574,7 +574,10 @@ const Dashboard = () => {
                         </td>
                         <td
                           onClick={() => navigate(`/quizanalysis/${quiz._id}`)}
-                          style={{cursor: 'pointer', textDecoration:"underline"}}
+                          style={{
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                          }}
                         >
                           Question Wise Analysis
                         </td>
@@ -582,7 +585,6 @@ const Dashboard = () => {
                     ))}
                   </tbody>
                 </table>
-                {/* <table></table> */}
               </div>
             ))}
         </div>
