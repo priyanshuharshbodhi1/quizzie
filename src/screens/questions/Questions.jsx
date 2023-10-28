@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./Questions.module.css";
+import { FadeLoader } from "react-spinners";
 
 const Question = () => {
   const [quiz, setQuiz] = useState(null);
@@ -12,6 +13,12 @@ const Question = () => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [userAnswers, setUserAnswers] = useState([]);
   const [timer, setTimer] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleOptionClick = (index) => {
     setSelectedOptionIndex(index);
@@ -54,6 +61,9 @@ const Question = () => {
   }, [quizId]);
 
   const handleNext = () => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 500);
+
     if (currentQuestionIndex === pollQuestionsCount - 1) {
       axios
         .post(
@@ -66,8 +76,12 @@ const Question = () => {
     }
   };
 
-  if (!quiz) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className={styles.loaderContainer}>
+        <FadeLoader color="#474444" />
+      </div>
+    );
   }
 
   const pollQuestionsCount = Object.keys(quiz.questions[0].pollQuestion).length;
@@ -108,7 +122,7 @@ const Question = () => {
                             ? styles.selectedOption
                             : ""
                         }`}
-                        style={{cursor: "pointer"}}
+                        style={{ cursor: "pointer" }}
                         onClick={() => handleOptionClick(index)}
                       >
                         {option.imageURL && option.imageURL.trim() !== "" ? (

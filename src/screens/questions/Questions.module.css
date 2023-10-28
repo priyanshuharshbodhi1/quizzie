@@ -2,6 +2,13 @@
   min-height: 90vh;
 }
 
+.loaderContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .questionContent {
   background: #ffffff;
   height: 100vh;
