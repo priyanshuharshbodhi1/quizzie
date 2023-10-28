@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import TrendingCard from "../../components/trendingCard/TrendingCard";
-// import ImpressionsIcon from "../../assets/images/impressions.svg";
 import DeleteIcon from "../../assets/images/delete-icon.svg";
 import EditIcon from "../../assets/images/edit-icon.svg";
 import ShareIcon from "../../assets/images/share-icon.svg";
@@ -225,7 +224,6 @@ const Dashboard = () => {
           options,
           ansOption,
         },
-        // More question objects here...
       ];
 
       axios
@@ -400,8 +398,10 @@ const Dashboard = () => {
     questions: 0,
     impressions: 0,
   });
+  const [trendingQuizzes, setTrendingQuizzes] = useState([]);
+
   useEffect(() => {
-    // Replace with your actual API endpoint
+    // Fetch data for dashboard main container
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/api/userData?email=${email}`)
       .then((response) => {
@@ -411,7 +411,21 @@ const Dashboard = () => {
       .catch((error) => {
         console.error("Error fetching user data:", error);
       });
+
+    // Fetch trending quizzes
+    axios
+      .get(
+        `${process.env.REACT_APP_API_BASE_URL}/api/trendingQuizzes?email=${email}`
+      )
+      .then((response) => {
+        setTrendingQuizzes(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching trending quizzes:", error);
+      });
   }, [email]);
+
+  console.log(trendingQuizzes);
 
   return (
     <>
@@ -457,28 +471,39 @@ const Dashboard = () => {
             <div className={styles.dashboardScreen}>
               <div className={styles.dashboardMainCard}>
                 <div className={styles.totalQuiz}>
-                  <div className={styles.dashboardQuizDataNumbers}>{quizData.quizzes}</div>
-                   Quizzes Created
+                  <div className={styles.dashboardQuizDataNumbers}>
+                    {quizData.quizzes}
+                  </div>
+                  Quizzes Created
                 </div>
                 <div className={styles.totalQuestions}>
-                  <div className={styles.dashboardQuizDataNumbers}>{quizData.questions}</div>
-                   Questions Created
+                  <div className={styles.dashboardQuizDataNumbers}>
+                    {quizData.questions}
+                  </div>
+                  Questions Created
                 </div>
                 <div className={styles.totalImpressions}>
-                  <div className={styles.dashboardQuizDataNumbers}>{quizData.impressions >= 1000
-                    ? `${(quizData.impressions / 1000).toFixed(1)}k`
-                    : quizData.impressions}</div>
-                  {" "}
+                  <div className={styles.dashboardQuizDataNumbers}>
+                    {quizData.impressions >= 1000
+                      ? `${(quizData.impressions / 1000).toFixed(1)}k`
+                      : quizData.impressions}
+                  </div>{" "}
                   Impressions
                 </div>
               </div>
               <div>
                 <h2>Trending Quiz</h2>
-                <TrendingCard
-                  quizName="Quiz 1"
-                  impressions="667"
-                  creationDate="04 Sep, 2023"
-                />
+                <div className={styles.trendingQuizCardContainer}>
+                  {trendingQuizzes.map((quiz) => (
+                    <TrendingCard
+                      key={quiz._id}
+                      quizName={quiz.quizName}
+                      impressions={quiz.impressions}
+                      creationDate={new Date(quiz.date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
+
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           )}
