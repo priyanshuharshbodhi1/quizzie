@@ -64,12 +64,12 @@
 }
 
 .dashboardScreen {
-  padding: 3rem;
+  padding: 6rem 4rem;
 }
 
 .dashboardMainCard {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .totalQuiz,
@@ -78,10 +78,28 @@
   border-radius: 0.625rem;
   background: #fff;
   padding: 1rem;
-  color: #ff5d01;
   flex: 1;
-  font-size: 2rem;
+  font-size: 1.55rem;
   font-style: normal;
+  font-weight: 550;
+  text-align: center;
+}
+
+.totalQuiz{
+  color: #FF5D01;
+
+}
+
+.totalQuestions{
+  color: #60B84B;
+}
+
+.totalImpressions{
+  color: #5076FF;
+}
+
+.dashboardQuizDataNumbers{
+  font-size: 2.7rem;
 }
 
 .analyticsScreen {

@@ -160,7 +160,7 @@ const Dashboard = () => {
     setTimerType(updatedTimerTypes);
   };
 
-  // const quizData = {
+  // const quizCreationData = {
   //   pollQuestion,
   //   options,
   //   ansOption,
@@ -172,7 +172,7 @@ const Dashboard = () => {
   // };
 
   const handleCreateQuizSubmit = () => {
-    // console.log("this is the quiz data", quizData);
+    // console.log("this is the quiz data", quizCreationData);
 
     // Validate all fields are filled
     const isPollQuestionFilled = pollQuestion[0] !== "";
@@ -317,7 +317,7 @@ const Dashboard = () => {
     .then((response) => {
       if (response.data.isLoggedIn) {
         setEmail(response.data.user.email);
-        setIsLoggedIn(response.data.isLoggedIn)
+        setIsLoggedIn(response.data.isLoggedIn);
         // console.log("User is logged in");
         // console.log("User email:", response.data.user.email);
       } else {
@@ -347,7 +347,7 @@ const Dashboard = () => {
   };
 
   const handleShareIconClick = (quizId) => {
-    const quizLink = `http://localhost:3000/quiz/${quizId}`;
+    const quizLink = `${process.env.REACT_APP_API_BASE_URL}/quiz/${quizId}`;
     navigator.clipboard
       .writeText(quizLink)
       .then(() => {
@@ -371,7 +371,7 @@ const Dashboard = () => {
 
   const notifyLinkCopied = () => {
     if (newQuizId) {
-      const quizLink = `http://localhost:3000/quiz/${newQuizId}`;
+      const quizLink = `${process.env.REACT_APP_API_BASE_URL}/quiz/${newQuizId}`;
       navigator.clipboard
         .writeText(quizLink)
         .then(() => {
@@ -393,6 +393,25 @@ const Dashboard = () => {
       theme: "light",
     });
   };
+
+  //for quiz data in dashboard
+  const [quizData, setQuizData] = useState({
+    quizzes: 0,
+    questions: 0,
+    impressions: 0,
+  });
+  useEffect(() => {
+    // Replace with your actual API endpoint
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}/api/userData?email=${email}`)
+      .then((response) => {
+        const { quizzes, questions, impressions } = response.data;
+        setQuizData({ quizzes, questions, impressions });
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, [email]);
 
   return (
     <>
@@ -437,13 +456,29 @@ const Dashboard = () => {
           {activeScreen === "dashboard" && (
             <div className={styles.dashboardScreen}>
               <div className={styles.dashboardMainCard}>
-                <div className={styles.totalQuiz}>{}Quiz Created</div>
-                <div className={styles.totalQuestions}>{}Questions Created</div>
-                <div className={styles.totalImpressions}>{}Impressions</div>
+                <div className={styles.totalQuiz}>
+                  <div className={styles.dashboardQuizDataNumbers}>{quizData.quizzes}</div>
+                   Quizzes Created
+                </div>
+                <div className={styles.totalQuestions}>
+                  <div className={styles.dashboardQuizDataNumbers}>{quizData.questions}</div>
+                   Questions Created
+                </div>
+                <div className={styles.totalImpressions}>
+                  <div className={styles.dashboardQuizDataNumbers}>{quizData.impressions >= 1000
+                    ? `${(quizData.impressions / 1000).toFixed(1)}k`
+                    : quizData.impressions}</div>
+                  {" "}
+                  Impressions
+                </div>
               </div>
               <div>
                 <h2>Trending Quiz</h2>
-                <TrendingCard quizName="Quiz 1" impressions="667" creationDate="04 Sep, 2023" />
+                <TrendingCard
+                  quizName="Quiz 1"
+                  impressions="667"
+                  creationDate="04 Sep, 2023"
+                />
               </div>
             </div>
           )}
@@ -473,7 +508,9 @@ const Dashboard = () => {
                           src={EditIcon}
                           alt=""
                           onClick={() =>
-                            alert("This Feature is under development, Please try again later...")
+                            alert(
+                              "This Feature is under development, Please try again later..."
+                            )
                           }
                         />
                         <img
