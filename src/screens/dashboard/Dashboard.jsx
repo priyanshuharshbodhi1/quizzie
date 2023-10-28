@@ -350,7 +350,7 @@ const Dashboard = () => {
   };
 
   const handleShareIconClick = (quizId) => {
-    const quizLink = `${process.env.REACT_APP_API_BASE_URL}/quiz/${quizId}`;
+    const quizLink = `http://localhost:3000/quiz/${quizId}`;
     navigator.clipboard
       .writeText(quizLink)
       .then(() => {
