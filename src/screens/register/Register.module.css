@@ -14,6 +14,13 @@ body {
   padding: 3rem;
 }
 
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .subContainer {
   border-radius: 0.9375rem;
   background: #fff;

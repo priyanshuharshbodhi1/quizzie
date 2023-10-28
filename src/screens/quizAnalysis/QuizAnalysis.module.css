@@ -1,8 +1,15 @@
 .mainContainer{
     height: 100vh;
     /* width: 100vw; */
-    padding: 1.5rem 5rem;
+    padding: 1.5rem 7rem;
 }
+
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
 
 .header{
     color: #5076FF;
@@ -11,6 +18,10 @@
     font-weight: 600;
     line-height: normal;
     margin-bottom: 2rem;
+}
+
+.questionAnalysisContainer{
+    margin-bottom: 1.5rem;
 }
 
 .question{

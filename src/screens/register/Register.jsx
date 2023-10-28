@@ -1,7 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Register.module.css";
+import { FadeLoader } from "react-spinners";
+
 
 const Register = () => {
+  // const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => setLoading(false), 500);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // if (loading) {
+  //   return (
+  //     <div className={styles.loaderContainer}>
+  //       <FadeLoader color="#474444" />
+  //     </div>
+  //   );
+  // } 
+
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,8 +43,23 @@ const Register = () => {
   // };
 
   const handleSubmitSignUpForm = (e) => {
-    console.log("submit form");
+    // console.log("submit form");
   };
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={styles.loaderContainer}>
+        <FadeLoader color="#474444" />
+      </div>
+    );
+  } 
 
   return (
     <>
