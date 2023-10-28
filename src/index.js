@@ -7,6 +7,7 @@ import PollCompletion from "./screens/pollCompletion/PollCompletion";
 import QuizCompletion from "./screens/quizCompletion/QuizCompletion";
 import Questions from "./screens/questions/Questions";
 import ItemNotFound  from "./screens/itemNotFound/ItemNotFound";
+import QuizAnalysis from "./screens/quizAnalysis/QuizAnalysis";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
   {
     path: "/item-not-found",
     element: <ItemNotFound />,
+  },
+  {
+    path: "/quizanalysis",
+    element: <QuizAnalysis/>,
   },
 ]);
 
