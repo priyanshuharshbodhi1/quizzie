@@ -9,6 +9,7 @@ import EditIcon from "../../assets/images/edit-icon.svg";
 import ShareIcon from "../../assets/images/share-icon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FadeLoader } from "react-spinners";
 
 const Dashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -289,18 +290,22 @@ const Dashboard = () => {
 
   //for analytics tab
   const [quizzes, setQuizzes] = useState([]);
+  const [isAnalyticsLoading, setAnalyticsLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/api/quizzes?email=${email}`)
       .then((response) => {
         setQuizzes(response.data);
+        setTimeout(() => {
+          setAnalyticsLoading(false);
+        }, 1000);
       })
       .catch((error) => {
         console.error("An error occurred while fetching the quizzes:", error);
       });
-  }, [email]);
-  console.log("analytics", quizzes);
+  }, [activeScreen, email]);
+  // console.log("analytics", quizzes);
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
 
@@ -369,7 +374,7 @@ const Dashboard = () => {
 
   const notifyLinkCopied = () => {
     if (newQuizId) {
-      const quizLink = `${process.env.REACT_APP_API_BASE_URL}/quiz/${newQuizId}`;
+      const quizLink = `http://localhost:3000/quiz/${newQuizId}`;
       navigator.clipboard
         .writeText(quizLink)
         .then(() => {
@@ -399,6 +404,7 @@ const Dashboard = () => {
     impressions: 0,
   });
   const [trendingQuizzes, setTrendingQuizzes] = useState([]);
+  const [dashboardLoading, setDashboardLoading] = useState(true);
 
   useEffect(() => {
     // Fetch data for dashboard main container
@@ -419,12 +425,16 @@ const Dashboard = () => {
       )
       .then((response) => {
         setTrendingQuizzes(response.data);
+        setTimeout(() => {
+          setDashboardLoading(false);
+        }, 500);
       })
       .catch((error) => {
         console.error("Error fetching trending quizzes:", error);
       });
   }, [email]);
 
+  console.log(email);
   console.log(trendingQuizzes);
 
   return (
@@ -467,96 +477,109 @@ const Dashboard = () => {
           </button>
         </div>
         <div className={styles.subContainer}>
-          {activeScreen === "dashboard" && (
-            <div className={styles.dashboardScreen}>
-              <div className={styles.dashboardMainCard}>
-                <div className={styles.totalQuiz}>
-                  <div className={styles.dashboardQuizDataNumbers}>
-                    {quizData.quizzes}
+          {activeScreen === "dashboard" &&
+            (dashboardLoading ? (
+              <div className={styles.loaderContainer}>
+                <FadeLoader color="#474444" />
+              </div>
+            ) : (
+              <div className={styles.dashboardScreen}>
+                <div className={styles.dashboardMainCard}>
+                  <div className={styles.totalQuiz}>
+                    <div className={styles.dashboardQuizDataNumbers}>
+                      {quizData.quizzes}
+                    </div>
+                    Quizzes Created
                   </div>
-                  Quizzes Created
-                </div>
-                <div className={styles.totalQuestions}>
-                  <div className={styles.dashboardQuizDataNumbers}>
-                    {quizData.questions}
+                  <div className={styles.totalQuestions}>
+                    <div className={styles.dashboardQuizDataNumbers}>
+                      {quizData.questions}
+                    </div>
+                    Questions Created
                   </div>
-                  Questions Created
+                  <div className={styles.totalImpressions}>
+                    <div className={styles.dashboardQuizDataNumbers}>
+                      {quizData.impressions >= 1000
+                        ? `${(quizData.impressions / 1000).toFixed(1)}k`
+                        : quizData.impressions}
+                    </div>{" "}
+                    Impressions
+                  </div>
                 </div>
-                <div className={styles.totalImpressions}>
-                  <div className={styles.dashboardQuizDataNumbers}>
-                    {quizData.impressions >= 1000
-                      ? `${(quizData.impressions / 1000).toFixed(1)}k`
-                      : quizData.impressions}
-                  </div>{" "}
-                  Impressions
+                <div>
+                  <h2>Trending Quiz</h2>
+                  <div className={styles.trendingQuizCardContainer}>
+                    {trendingQuizzes.map((quiz) => (
+                      <TrendingCard
+                        key={quiz._id}
+                        quizName={quiz.quizName}
+                        impressions={quiz.impressions}
+                        creationDate={new Date(quiz.date).toLocaleDateString(
+                          "en-US",
+                          { day: "2-digit", month: "short", year: "numeric" }
+                        )}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div>
-                <h2>Trending Quiz</h2>
-                <div className={styles.trendingQuizCardContainer}>
-                  {trendingQuizzes.map((quiz) => (
-                    <TrendingCard
-                      key={quiz._id}
-                      quizName={quiz.quizName}
-                      impressions={quiz.impressions}
-                      creationDate={new Date(quiz.date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
+            ))}
 
-                    />
-                  ))}
-                </div>
+          {activeScreen === "analytics" &&
+            (isAnalyticsLoading ? (
+              <div className={styles.loaderContainer}>
+                <FadeLoader color="#474444" />
               </div>
-            </div>
-          )}
-          {activeScreen === "analytics" && (
-            <div className={styles.analyticsScreen}>
-              <h1 className={styles.analyticsHeading}>Quiz Analytics</h1>
-              <table className={styles.analyticsTable}>
-                <thead>
-                  <tr>
-                    <th>S.No</th>
-                    <th>Quiz Name</th>
-                    <th>Created on</th>
-                    <th>Impression</th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {quizzes.map((quiz, index) => (
-                    <tr key={quiz._id}>
-                      <td>{index + 1}</td>
-                      <td>{quiz.quizName}</td>
-                      <td>{new Date(quiz.date).toLocaleDateString()}</td>
-                      <td>{quiz.impressions}</td>
-                      <td>
-                        <img
-                          src={EditIcon}
-                          alt=""
-                          onClick={() =>
-                            alert(
-                              "This Feature is under development, Please try again later..."
-                            )
-                          }
-                        />
-                        <img
-                          src={DeleteIcon}
-                          alt=""
-                          onClick={() => handleDeleteIconClick(quiz._id)}
-                        />
-                        <img
-                          src={ShareIcon}
-                          alt=""
-                          onClick={() => handleShareIconClick(quiz._id)}
-                        />
-                      </td>
-                      <td>Question Wise Analysis</td>
+            ) : (
+              <div className={styles.analyticsScreen}>
+                <h1 className={styles.analyticsHeading}>Quiz Analytics</h1>
+                <table className={styles.analyticsTable}>
+                  <thead>
+                    <tr>
+                      <th>S.No</th>
+                      <th>Quiz Name</th>
+                      <th>Created on</th>
+                      <th>Impression</th>
+                      <th></th>
+                      <th></th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              <table></table>
-            </div>
-          )}
+                  </thead>
+                  <tbody>
+                    {quizzes.map((quiz, index) => (
+                      <tr key={quiz._id}>
+                        <td>{index + 1}</td>
+                        <td>{quiz.quizName}</td>
+                        <td>{new Date(quiz.date).toLocaleDateString()}</td>
+                        <td>{quiz.impressions}</td>
+                        <td>
+                          <img
+                            src={EditIcon}
+                            alt=""
+                            onClick={() =>
+                              alert(
+                                "This Feature is under development, Please try again later..."
+                              )
+                            }
+                          />
+                          <img
+                            src={DeleteIcon}
+                            alt=""
+                            onClick={() => handleDeleteIconClick(quiz._id)}
+                          />
+                          <img
+                            src={ShareIcon}
+                            alt=""
+                            onClick={() => handleShareIconClick(quiz._id)}
+                          />
+                        </td>
+                        <td>Question Wise Analysis</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <table></table>
+              </div>
+            ))}
         </div>
         {showModal && (
           <div className={styles.modalOverlay} onClick={handleCancel}>
