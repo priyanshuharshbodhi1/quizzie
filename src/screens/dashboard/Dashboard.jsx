@@ -3,7 +3,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
-import ImpressionsIcon from "../../assets/images/impressions.svg";
+import TrendingCard from "../../components/trendingCard/TrendingCard";
+// import ImpressionsIcon from "../../assets/images/impressions.svg";
 import DeleteIcon from "../../assets/images/delete-icon.svg";
 import EditIcon from "../../assets/images/edit-icon.svg";
 import ShareIcon from "../../assets/images/share-icon.svg";
@@ -442,16 +443,7 @@ const Dashboard = () => {
               </div>
               <div>
                 <h2>Trending Quiz</h2>
-                <div className={styles.trendingQuizCard}>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <div className={styles.quizName}>Quiz 1</div>
-                    <div className={styles.impressions}>667 </div>
-                    <img src={ImpressionsIcon} alt="" />
-                  </div>
-                  <div className={styles.creationDate}>
-                    Created on : 04 Sep, 2023
-                  </div>
-                </div>
+                <TrendingCard quizName="Quiz 1" impressions="667" creationDate="04 Sep, 2023" />
               </div>
             </div>
           )}

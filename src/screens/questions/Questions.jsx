@@ -108,6 +108,7 @@ const Question = () => {
                             ? styles.selectedOption
                             : ""
                         }`}
+                        style={{cursor: "pointer"}}
                         onClick={() => handleOptionClick(index)}
                       >
                         {option.imageURL && option.imageURL.trim() !== "" ? (
