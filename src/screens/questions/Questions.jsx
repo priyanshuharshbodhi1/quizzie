@@ -20,15 +20,27 @@ const Question = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // const [userAnswers, setUserAnswers] = useState({});
+
   const handleOptionClick = (index) => {
     setSelectedOptionIndex(index);
 
     const isCorrect =
-      quiz.questions[0].ansOption[currentQuestionIndex] === index; // Corrected typo
-    const newUserAnswers = [...userAnswers];
-    newUserAnswers[currentQuestionIndex] = { userAnswer: index, isCorrect };
+      quiz.questions[0].ansOption[currentQuestionIndex] === index;
+    const newUserAnswers = { ...userAnswers };
+    newUserAnswers[currentQuestionIndex] = isCorrect ? 1 : 0;
     setUserAnswers(newUserAnswers);
   };
+
+  // const handleOptionClick = (index) => {
+  //   setSelectedOptionIndex(index);
+
+  //   const isCorrect =
+  //     quiz.questions[0].ansOption[currentQuestionIndex] === index; // Corrected typo
+  //   const newUserAnswers = [...userAnswers];
+  //   newUserAnswers[currentQuestionIndex] = { userAnswer: index, isCorrect };
+  //   setUserAnswers(newUserAnswers);
+  // };
 
   useEffect(() => {
     if (
@@ -65,14 +77,36 @@ const Question = () => {
     setTimeout(() => setLoading(false), 500);
 
     if (currentQuestionIndex === pollQuestionsCount - 1) {
+      const correctAnswers = Object.values(userAnswers).reduce(
+        (sum, answer) => sum + answer,
+        0
+      );
+
+      axios
+        .post(
+          `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/submit`,
+          { userAnswers }
+        )
+        .catch((error) =>
+          console.error("Error submitting quiz answers:", error)
+        );
+
       axios
         .post(
           `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/impression`
         )
         .catch((error) => console.error("Error recording impression:", error));
-      navigate("/quizcompleted");
+
+      if (quiz.quizType === "Poll Type") {
+        navigate("/pollcompleted");
+      } else {
+        navigate("/quizcompleted", {
+          state: { score: correctAnswers, totalQuestions: pollQuestionsCount },
+        });
+      }
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedOptionIndex(null);
     }
   };
 
@@ -144,7 +178,11 @@ const Question = () => {
                 }
               )}
           </div>
-          <button className={styles.nextBtn} onClick={handleNext}>
+          <button
+            className={styles.nextBtn}
+            onClick={handleNext}
+            disabled={selectedOptionIndex === null}
+          >
             {currentQuestionIndex === pollQuestionsCount - 1
               ? "Submit"
               : "Next"}

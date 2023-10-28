@@ -7,6 +7,14 @@
   align-items: center;
 }
 
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
 .thankYouContainer {
   border-radius: 0.9375rem;
   background: #fff;
