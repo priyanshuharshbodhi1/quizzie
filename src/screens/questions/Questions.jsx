@@ -137,7 +137,7 @@ const Question = () => {
             </div>
           </div>
           <div className={styles.pollQuestion}>
-          {currentQuestionIndex + 1}{quiz.questions[0].pollQuestion[currentQuestionIndex]}
+          {currentQuestionIndex + 1}. {quiz.questions[0].pollQuestion[currentQuestionIndex]}
           </div>
           <div className={styles.options}>
             {quiz &&
