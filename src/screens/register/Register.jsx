@@ -3,21 +3,6 @@ import styles from "./Register.module.css";
 import { FadeLoader } from "react-spinners";
 
 const Register = () => {
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => setLoading(false), 500);
-  //   return () => clearTimeout(timer);
-  // }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div className={styles.loaderContainer}>
-  //       <FadeLoader color="#474444" />
-  //     </div>
-  //   );
-  // }
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,16 +30,13 @@ const Register = () => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        window.location.href = '/dashboard';
+        window.location.href = "/dashboard";
         // console.log(data.token)
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   };
-
-  // const jwtToken2 = localStorage.getItem('jwt');
-  // console.log("jwt from local storage:", jwtToken2);
 
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
@@ -66,7 +48,7 @@ const Register = () => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        window.location.href = '/dashboard';
+        window.location.href = "/dashboard";
       })
       .catch((error) => {
         console.error("Error:", error);

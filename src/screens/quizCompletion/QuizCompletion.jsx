@@ -3,10 +3,27 @@ import { useLocation } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
 import styles from "./QuizCompletion.module.css";
 import TrophyImage from "../../assets/images/trophy-image.png";
+import Confetti from "react-confetti";
 
 const QuizCompletion = () => {
   const location = useLocation();
   const { score, totalQuestions } = location.state;
+
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+      setHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +42,7 @@ const QuizCompletion = () => {
 
   return (
     <div className={styles.mainContainer}>
+      {!loading && <Confetti width={width} height={height} />}
       <div className={styles.thankYouContainer}>
         <div className={styles.headding}>Congrats Quiz is completed</div>
         <img src={TrophyImage} alt="" className={styles.trophyImage} />

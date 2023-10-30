@@ -10,17 +10,21 @@ import ShareIcon from "../../assets/images/share-icon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FadeLoader } from "react-spinners";
+import Confetti from 'react-confetti';
 
 const Dashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  const [width, setWidth] = useState(window.innerWidth);
+const [height, setHeight] = useState(window.innerHeight);
+
 
   const [activeScreen, setActiveScreen] = useState("dashboard");
 
   const [showModal, setShowModal] = useState(false);
   const handleDeleteIconClick = (quizId) => {
     setQuizIdToDelete(quizId);
-    // Show the confirmation modal
     setShowModal(true);
   };
   const [quizIdToDelete, setQuizIdToDelete] = useState(null);
@@ -40,10 +44,6 @@ const Dashboard = () => {
       .catch((error) => console.error("Error deleting quiz:", error));
   };
 
-  // const handleConfirm = () => {
-  //   setShowModal(false);
-  // };
-
   const handleCancel = () => {
     setShowModal(false);
     setShowQuizPublishedModal(false);
@@ -57,8 +57,6 @@ const Dashboard = () => {
     setActiveScreen("dashboard");
   };
 
-  // console.log(email)
-
   const handleShowQuizQueModal = () => {
     if (quizName && quizType) {
       setShowQuestionModal(true);
@@ -71,12 +69,6 @@ const Dashboard = () => {
   const handleCancelQuizQuestionModal = () => {
     setShowQuestionModal(false);
   };
-
-  // const handleCreateQuiz = () => {
-  //   setShowQuestionModal(false);
-  //   setShowQuizPublishedModal(true);
-  //   console.log("Creating quiz", questions);
-  // };
 
   //Question Modal -
   //for question numbers
@@ -112,10 +104,6 @@ const Dashboard = () => {
   const handleQuestionNoChange = (index) => {
     setCurrentQuestionIndex(index);
   };
-
-  // useEffect(() => {
-  //   console.log(currentQuestionIndex + 1);
-  // }, [currentQuestionIndex]);
 
   //for questions and options
   const [showQuestionModal, setShowQuestionModal] = useState(false);
@@ -160,20 +148,7 @@ const Dashboard = () => {
     setTimerType(updatedTimerTypes);
   };
 
-  // const quizCreationData = {
-  //   pollQuestion,
-  //   options,
-  //   ansOption,
-  //   timerType,
-  //   questions: questions,
-  //   quizName,
-  //   quizType,
-  //   email,
-  // };
-
   const handleCreateQuizSubmit = () => {
-    // console.log("this is the quiz data", quizCreationData);
-
     // Validate all fields are filled
     const isPollQuestionFilled = pollQuestion[0] !== "";
     const isOptionsFilled = options.some((option) =>
@@ -238,9 +213,7 @@ const Dashboard = () => {
           }
         )
         .then((response) => {
-          // console.log("Quiz Data to be saved:", response.data);
           setNewQuizId(response.data.id);
-          // console.log(response.data.id);
         })
         .catch((error) => {
           console.error("An error occurred while saving the quiz:", error);
@@ -305,37 +278,23 @@ const Dashboard = () => {
         console.error("An error occurred while fetching the quizzes:", error);
       });
   }, [activeScreen, email]);
-  // console.log("analytics", quizzes);
+
   //for quiz published modal
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
 
-  //getting the login credentials from the user
-  //   const jwtToken = Cookies.get("jwt");
-  //   console.log("jwt from cookies:", jwtToken);
-  //   console.log("cookie:", document.cookie)
-
-  //   const jwtToken2 = localStorage.getItem('jwt');
-  // console.log("jwt from local storage:", jwtToken2);
-
-  //   axios
-  //     .get(`${process.env.REACT_APP_API_BASE_URL}/api/isloggedin`, {
-  //       headers: {
-  //         Authorization: `Bearer ${jwtToken}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       if (response.data.isLoggedIn) {
-  //         setEmail(response.data.user.email);
-  //         setIsLoggedIn(response.data.isLoggedIn);
-  //         // console.log("User is logged in");
-  //         // console.log("User email:", response.data.user.email);
-  //       } else {
-  //         console.log("User is not logged in");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("An error occurred:", error);
-  //     });
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+      setHeight(window.innerHeight);
+    };
+  
+    window.addEventListener('resize', handleResize);
+  
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
 
   const jwtToken = localStorage.getItem("jwt");
   // console.log("jwt from local storage:", jwtToken);
@@ -350,8 +309,6 @@ const Dashboard = () => {
       if (response.data.isLoggedIn) {
         setEmail(response.data.user.email);
         setIsLoggedIn(response.data.isLoggedIn);
-        // console.log("User is logged in");
-        // console.log("User email:", response.data.user.email);
       } else {
         console.log("User is not logged in");
       }
@@ -359,24 +316,6 @@ const Dashboard = () => {
     .catch((error) => {
       console.error("An error occurred:", error);
     });
-
-  // const handleLogout = () => {
-  //   axios
-  //     .post(`${process.env.REACT_APP_API_BASE_URL}/api/logout`, null, {
-  //       withCredentials: true,
-  //     })
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         Cookies.remove("jwt");
-  //         // setIsLoggedIn(false);
-  //         // console.log("User is logged out");
-  //         navigate("/");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error during logout:", error);
-  //     });
-  // };
 
   const handleLogout = () => {
     axios
@@ -386,8 +325,6 @@ const Dashboard = () => {
       .then((response) => {
         if (response.status === 200) {
           localStorage.removeItem("jwt"); // Remove JWT from local storage
-          // setIsLoggedIn(false);
-          // console.log("User is logged out");
           navigate("/");
         }
       })
@@ -479,14 +416,11 @@ const Dashboard = () => {
       });
   }, [email]);
 
-  // console.log(email);
-  // console.log(trendingQuizzes);
-
   return (
     <>
       <div className={styles.mainContainer}>
         <div className={styles.sideBar}>
-          <Link to="/dashboard" style={{textDecoration:"none"}}>
+          <Link to="/dashboard" style={{ textDecoration: "none" }}>
             <div className={styles.logo}>QUIZZIE</div>
           </Link>
           <div className={styles.modesContainer}>
@@ -811,7 +745,7 @@ const Dashboard = () => {
                     className={styles.pollOptionType}
                     style={{ display: "flex" }}
                   >
-                    <div style={{marginRight:"1.5rem"}}>Option Type:</div>
+                    <div style={{ marginRight: "1.5rem" }}>Option Type:</div>
                     <label className={styles.modalLabel}>
                       <input
                         type="radio"
@@ -821,7 +755,10 @@ const Dashboard = () => {
                       />
                       Text
                     </label>
-                    <label className={styles.modalLabel} style={{marginLeft:".5rem"}}>
+                    <label
+                      className={styles.modalLabel}
+                      style={{ marginLeft: ".5rem" }}
+                    >
                       <input
                         type="radio"
                         name="optionType"
@@ -830,7 +767,10 @@ const Dashboard = () => {
                       />
                       Image URL
                     </label>
-                    <label className={styles.modalLabel} style={{marginLeft:".5rem"}}>
+                    <label
+                      className={styles.modalLabel}
+                      style={{ marginLeft: ".5rem" }}
+                    >
                       <input
                         type="radio"
                         name="optionType"
@@ -950,8 +890,8 @@ const Dashboard = () => {
                       className={styles.timerType}
                       style={{ display: "flex" }}
                     >
-                      <div style={{marginRight:"auto"}}>Timer Type:</div>
-                      <label className={styles.modalLabel} >
+                      <div style={{ marginRight: "auto" }}>Timer Type:</div>
+                      <label className={styles.modalLabel}>
                         <input
                           type="radio"
                           name="timerType"
@@ -961,7 +901,10 @@ const Dashboard = () => {
                         />{" "}
                         5 Sec
                       </label>
-                      <label className={styles.modalLabel} style={{marginLeft:".5rem"}}>
+                      <label
+                        className={styles.modalLabel}
+                        style={{ marginLeft: ".5rem" }}
+                      >
                         <input
                           type="radio"
                           name="timerType"
@@ -971,7 +914,10 @@ const Dashboard = () => {
                         />
                         10 Sec
                       </label>
-                      <label className={styles.modalLabel} style={{marginLeft:".5rem"}}>
+                      <label
+                        className={styles.modalLabel}
+                        style={{ marginLeft: ".5rem" }}
+                      >
                         <input
                           type="radio"
                           name="timerType"
@@ -1004,6 +950,7 @@ const Dashboard = () => {
         )}
         {showQuizPublishedModal && (
           <div className={styles.modalOverlay} onClick={handleCancel}>
+             <Confetti width={width} height={height} />
             <div
               className={styles.modalPublished}
               onClick={(e) => e.stopPropagation()}
@@ -1027,7 +974,6 @@ const Dashboard = () => {
 
                 <div className={styles.buttonContainer}>
                   <button
-                    // onClick={handleConfirm}
                     className={styles.shareLinkBtn}
                     onClick={notifyLinkCopied}
                   >

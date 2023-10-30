@@ -20,8 +20,6 @@ const Question = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // const [userAnswers, setUserAnswers] = useState({});
-
   const handleOptionClick = (index) => {
     if (quiz && quiz.questions && quiz.questions[0]) {
       setSelectedOptionIndex(index);
@@ -33,16 +31,6 @@ const Question = () => {
       setUserAnswers(newUserAnswers);
     }
   };
-
-  // const handleOptionClick = (index) => {
-  //   setSelectedOptionIndex(index);
-
-  //   const isCorrect =
-  //     quiz.questions[0].ansOption[currentQuestionIndex] === index; // Corrected typo
-  //   const newUserAnswers = [...userAnswers];
-  //   newUserAnswers[currentQuestionIndex] = { userAnswer: index, isCorrect };
-  //   setUserAnswers(newUserAnswers);
-  // };
 
   useEffect(() => {
     if (
@@ -129,17 +117,23 @@ const Question = () => {
     );
   }
 
-  // const pollQuestionsCount = Object.keys(quiz.questions[0].pollQuestion).length;
-  // console.log(pollQuestionsCount);
-  // console.log(quiz.questions[0].options[currentQuestionIndex]);
-
   let pollQuestionsCount = 0;
-  if (quiz && quiz.questions && quiz.questions[0] && quiz.questions[0].pollQuestion) {
+  if (
+    quiz &&
+    quiz.questions &&
+    quiz.questions[0] &&
+    quiz.questions[0].pollQuestion
+  ) {
     pollQuestionsCount = Object.keys(quiz.questions[0].pollQuestion).length;
   }
   console.log(pollQuestionsCount);
-  
-  if (quiz && quiz.questions && quiz.questions[0] && quiz.questions[0].options) {
+
+  if (
+    quiz &&
+    quiz.questions &&
+    quiz.questions[0] &&
+    quiz.questions[0].options
+  ) {
     console.log(quiz.questions[0].options[currentQuestionIndex]);
   }
 
