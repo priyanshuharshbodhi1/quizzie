@@ -10,15 +10,14 @@ import ShareIcon from "../../assets/images/share-icon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FadeLoader } from "react-spinners";
-import Confetti from 'react-confetti';
+import Confetti from "react-confetti";
 
 const Dashboard = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const [width, setWidth] = useState(window.innerWidth);
-const [height, setHeight] = useState(window.innerHeight);
-
+  const [height, setHeight] = useState(window.innerHeight);
 
   const [activeScreen, setActiveScreen] = useState("dashboard");
 
@@ -287,14 +286,13 @@ const [height, setHeight] = useState(window.innerHeight);
       setWidth(window.innerWidth);
       setHeight(window.innerHeight);
     };
-  
-    window.addEventListener('resize', handleResize);
-  
+
+    window.addEventListener("resize", handleResize);
+
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
 
   const jwtToken = localStorage.getItem("jwt");
   // console.log("jwt from local storage:", jwtToken);
@@ -409,12 +407,17 @@ const [height, setHeight] = useState(window.innerHeight);
       )
       .then((response) => {
         setTrendingQuizzes(response.data);
-        setDashboardLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching trending quizzes:", error);
       });
   }, [email]);
+
+  useEffect(() => {
+    if (quizData && trendingQuizzes) {
+      setDashboardLoading(false);
+    }
+  }, [quizData, trendingQuizzes]);
 
   return (
     <>
@@ -950,7 +953,7 @@ const [height, setHeight] = useState(window.innerHeight);
         )}
         {showQuizPublishedModal && (
           <div className={styles.modalOverlay} onClick={handleCancel}>
-             <Confetti width={width} height={height} />
+            <Confetti width={width} height={height} />
             <div
               className={styles.modalPublished}
               onClick={(e) => e.stopPropagation()}
