@@ -310,9 +310,36 @@ const Dashboard = () => {
   const [showQuizPublishedModal, setShowQuizPublishedModal] = useState(false);
 
   //getting the login credentials from the user
-  const jwtToken = Cookies.get("jwt");
-  console.log("jwt from cookies:", jwtToken);
-  console.log("cookie:", document.cookie)
+  //   const jwtToken = Cookies.get("jwt");
+  //   console.log("jwt from cookies:", jwtToken);
+  //   console.log("cookie:", document.cookie)
+
+  //   const jwtToken2 = localStorage.getItem('jwt');
+  // console.log("jwt from local storage:", jwtToken2);
+
+  //   axios
+  //     .get(`${process.env.REACT_APP_API_BASE_URL}/api/isloggedin`, {
+  //       headers: {
+  //         Authorization: `Bearer ${jwtToken}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       if (response.data.isLoggedIn) {
+  //         setEmail(response.data.user.email);
+  //         setIsLoggedIn(response.data.isLoggedIn);
+  //         // console.log("User is logged in");
+  //         // console.log("User email:", response.data.user.email);
+  //       } else {
+  //         console.log("User is not logged in");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("An error occurred:", error);
+  //     });
+
+  const jwtToken = localStorage.getItem("jwt");
+  console.log("jwt from local storage:", jwtToken);
+
   axios
     .get(`${process.env.REACT_APP_API_BASE_URL}/api/isloggedin`, {
       headers: {

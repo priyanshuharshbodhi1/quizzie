@@ -52,6 +52,9 @@ const Register = () => {
       });
   };
 
+  const jwtToken2 = localStorage.getItem('jwt');
+  console.log("jwt from local storage:", jwtToken2);
+
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
