@@ -473,7 +473,6 @@ const Dashboard = () => {
       .then((response) => {
         setTrendingQuizzes(response.data);
         setDashboardLoading(false);
-        
       })
       .catch((error) => {
         console.error("Error fetching trending quizzes:", error);
@@ -555,17 +554,24 @@ const Dashboard = () => {
                 <div>
                   <h2>Trending Quiz</h2>
                   <div className={styles.trendingQuizCardContainer}>
-                    {trendingQuizzes.map((quiz) => (
-                      <TrendingCard
-                        key={quiz._id}
-                        quizName={quiz.quizName}
-                        impressions={quiz.impressions}
-                        creationDate={new Date(quiz.date).toLocaleDateString(
-                          "en-US",
-                          { day: "2-digit", month: "short", year: "numeric" }
-                        )}
-                      />
-                    ))}
+                    {trendingQuizzes.length > 0 ? (
+                      trendingQuizzes.map((quiz) => (
+                        <TrendingCard
+                          key={quiz._id}
+                          quizName={quiz.quizName}
+                          impressions={quiz.impressions}
+                          creationDate={new Date(quiz.date).toLocaleDateString(
+                            "en-US",
+                            { day: "2-digit", month: "short", year: "numeric" }
+                          )}
+                        />
+                      ))
+                    ) : (
+                      <p>
+                        You haven't created any Quiz, Click on Create Quiz to
+                        create your first Quiz
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
