@@ -380,11 +380,7 @@ const Dashboard = () => {
   };
 
   //for quiz data in dashboard
-  const [quizData, setQuizData] = useState({
-    quizzes: 0,
-    questions: 0,
-    impressions: 0,
-  });
+  const [quizData, setQuizData] = useState(null);
   const [trendingQuizzes, setTrendingQuizzes] = useState([]);
   const [dashboardLoading, setDashboardLoading] = useState(true);
 
@@ -414,7 +410,7 @@ const Dashboard = () => {
   }, [email]);
 
   useEffect(() => {
-    if (quizData && trendingQuizzes) {
+    if (quizData !== null && trendingQuizzes) {
       setDashboardLoading(false);
     }
   }, [quizData, trendingQuizzes]);
@@ -471,19 +467,19 @@ const Dashboard = () => {
                 <div className={styles.dashboardMainCard}>
                   <div className={styles.totalQuiz}>
                     <div className={styles.dashboardQuizDataNumbers}>
-                      {quizData.quizzes}
+                      {quizData && quizData.quizzes}
                     </div>
                     Quizzes Created
                   </div>
                   <div className={styles.totalQuestions}>
                     <div className={styles.dashboardQuizDataNumbers}>
-                      {quizData.questions}
+                      {quizData && quizData.questions}
                     </div>
                     Questions Created
                   </div>
                   <div className={styles.totalImpressions}>
                     <div className={styles.dashboardQuizDataNumbers}>
-                      {quizData.impressions >= 1000
+                      {quizData && quizData.impressions >= 1000
                         ? `${(quizData.impressions / 1000).toFixed(1)}k`
                         : quizData.impressions}
                     </div>{" "}
