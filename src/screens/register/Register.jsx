@@ -10,6 +10,8 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [activeMode, setActiveMode] = useState("signup");
 
   const handleChange = (e) => {
@@ -22,6 +24,7 @@ const Register = () => {
 
   const handleSubmitSignUpForm = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -36,10 +39,13 @@ const Register = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
+
+    setIsLoading(false);
   };
 
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -53,6 +59,7 @@ const Register = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
+    setIsLoading(false);
   };
 
   const [loading, setLoading] = useState(true);
@@ -165,7 +172,7 @@ const Register = () => {
                   className={styles.signUpBtn}
                   onClick={handleSubmitSignUpForm}
                 >
-                  Sign Up
+                  Sign Up {isLoading && <FadeLoader color="#474444" size={10}/>}
                 </button>
               </form>
             </div>
@@ -211,7 +218,7 @@ const Register = () => {
                 </div>
 
                 <button type="submit" className={styles.signUpBtn}>
-                  Log In
+                  Log In {isLoading && <FadeLoader color="#474444" size={10}/>}
                 </button>
               </form>
             </div>
