@@ -411,9 +411,12 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (quizData !== null && trendingQuizzes) {
-      setDashboardLoading(false);
+      setTimeout(() => {
+        setDashboardLoading(false);
+      }, 600);
     }
   }, [quizData, trendingQuizzes]);
+  
 
   return (
     <>
