@@ -395,7 +395,6 @@ const Dashboard = () => {
         console.error("Error during logout:", error);
       });
   };
-  
 
   const handleShareIconClick = (quizId) => {
     const quizLink = `http://localhost:3000/quiz/${quizId}`;
@@ -473,9 +472,8 @@ const Dashboard = () => {
       )
       .then((response) => {
         setTrendingQuizzes(response.data);
-        setTimeout(() => {
-          setDashboardLoading(false);
-        }, 500);
+        setDashboardLoading(false);
+        
       })
       .catch((error) => {
         console.error("Error fetching trending quizzes:", error);
