@@ -28,6 +28,7 @@
   font-weight: 550;
   line-height: normal;
   text-align: center;
+  cursor: pointer;
 }
 
 .modesContainer {
@@ -45,6 +46,10 @@
   border: none;
   cursor: pointer;
   font-weight: 550;
+}
+
+.modeBtn:hover {
+  background: #dedcdc;
 }
 
 .activeScreen {
@@ -97,20 +102,19 @@
   text-align: center;
 }
 
-.totalQuiz{
-  color: #FF5D01;
-
+.totalQuiz {
+  color: #ff5d01;
 }
 
-.totalQuestions{
-  color: #60B84B;
+.totalQuestions {
+  color: #60b84b;
 }
 
-.totalImpressions{
-  color: #5076FF;
+.totalImpressions {
+  color: #5076ff;
 }
 
-.dashboardQuizDataNumbers{
+.dashboardQuizDataNumbers {
   font-size: 2.7rem;
 }
 
@@ -119,6 +123,15 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 20px;
+}
+
+.firstQuiz {
+  display: contents;
+}
+
+.firstQuizPara {
+  margin-top: -1rem;
+  color: #f8792f;
 }
 
 .analyticsScreen {
@@ -204,6 +217,8 @@
   padding: 0.5rem;
   border: none;
   flex: 1;
+  transition-duration: 0.4s;
+
   cursor: pointer;
 }
 
@@ -214,7 +229,33 @@
   flex: 1;
   border: none;
   cursor: pointer;
+  transition-duration: 0.4s;
+
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
+}
+
+.confirmDeleteModalButton:active,
+.cancelModalButton:active,
+.confirmQuizNameButton:active,
+.confirmCreateQuizButton:active {
+  transform: scale(0.9);
+}
+
+.confirmDeleteModalButton:hover {
+  background: #f92c2c;
+}
+
+.cancelModalButton:hover {
+  background: #dedcdc;
+
+}
+
+.confirmQuizNameButton:hover {
+  background: #5bd93c;
+}
+
+.confirmCreateQuizButton:hover {
+  background: #5bd93c;
 }
 
 /* for Quiz name modal */
@@ -250,6 +291,8 @@
   padding: 0.5rem;
   flex: 1;
   color: #fff;
+  transition-duration: 0.4s;
+
   cursor: pointer;
 }
 
@@ -357,6 +400,7 @@
   padding: 0.5rem;
   flex: 1;
   color: #fff;
+  transition-duration: 0.4s;
 }
 
 /* quiz published modal */
@@ -374,7 +418,7 @@
   background-color: #ededed;
   width: -moz-fit-content;
   border-radius: 0.5rem;
-  padding: .4rem 1rem;
+  padding: 0.4rem 1rem;
   overflow-x: clip;
   text-align: center;
 }
@@ -382,7 +426,6 @@
 .quizLink::-webkit-scrollbar {
   display: none;
 }
-
 
 .shareLinkBtn {
   border-radius: 0.625rem;
@@ -392,6 +435,17 @@
   color: #fff;
   cursor: pointer;
   margin-bottom: 1rem;
+  transition-duration: 0.4s;
 }
 
-/* empty inputs */
+.shareLinkBtn:hover {
+  background: #5bd93c;
+}
+
+.shareLinkBtn:active {
+  transform: scale(0.9);
+}
+
+input[type="radio"]:checked {
+  color: #60b84b; 
+}

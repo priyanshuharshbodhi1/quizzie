@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import TrendingCard from "../../components/trendingCard/TrendingCard";
@@ -486,7 +486,9 @@ const Dashboard = () => {
     <>
       <div className={styles.mainContainer}>
         <div className={styles.sideBar}>
-          <div className={styles.logo}>QUIZZIE</div>
+          <Link to="/dashboard" style={{textDecoration:"none"}}>
+            <div className={styles.logo}>QUIZZIE</div>
+          </Link>
           <div className={styles.modesContainer}>
             <button
               className={`${styles.modeBtn} ${
@@ -553,7 +555,11 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <h2>Trending Quiz</h2>
-                  <div className={styles.trendingQuizCardContainer}>
+                  <div
+                    className={`${styles.trendingQuizCardContainer} ${
+                      trendingQuizzes.length > 0 ? "" : styles.firstQuiz
+                    }`}
+                  >
                     {trendingQuizzes.length > 0 ? (
                       trendingQuizzes.map((quiz) => (
                         <TrendingCard
@@ -567,7 +573,7 @@ const Dashboard = () => {
                         />
                       ))
                     ) : (
-                      <p>
+                      <p className={styles.firstQuizPara}>
                         You haven't created any Quiz, Click on Create Quiz to
                         create your first Quiz
                       </p>
@@ -805,7 +811,7 @@ const Dashboard = () => {
                     className={styles.pollOptionType}
                     style={{ display: "flex" }}
                   >
-                    <div>Option Type</div>
+                    <div style={{marginRight:"1.5rem"}}>Option Type:</div>
                     <label className={styles.modalLabel}>
                       <input
                         type="radio"
@@ -815,7 +821,7 @@ const Dashboard = () => {
                       />
                       Text
                     </label>
-                    <label className={styles.modalLabel}>
+                    <label className={styles.modalLabel} style={{marginLeft:".5rem"}}>
                       <input
                         type="radio"
                         name="optionType"
@@ -824,7 +830,7 @@ const Dashboard = () => {
                       />
                       Image URL
                     </label>
-                    <label className={styles.modalLabel}>
+                    <label className={styles.modalLabel} style={{marginLeft:".5rem"}}>
                       <input
                         type="radio"
                         name="optionType"
@@ -944,8 +950,8 @@ const Dashboard = () => {
                       className={styles.timerType}
                       style={{ display: "flex" }}
                     >
-                      <div>Timer Type</div>
-                      <label className={styles.modalLabel}>
+                      <div style={{marginRight:"auto"}}>Timer Type:</div>
+                      <label className={styles.modalLabel} >
                         <input
                           type="radio"
                           name="timerType"
@@ -955,7 +961,7 @@ const Dashboard = () => {
                         />{" "}
                         5 Sec
                       </label>
-                      <label className={styles.modalLabel}>
+                      <label className={styles.modalLabel} style={{marginLeft:".5rem"}}>
                         <input
                           type="radio"
                           name="timerType"
@@ -965,7 +971,7 @@ const Dashboard = () => {
                         />
                         10 Sec
                       </label>
-                      <label className={styles.modalLabel}>
+                      <label className={styles.modalLabel} style={{marginLeft:".5rem"}}>
                         <input
                           type="radio"
                           name="timerType"

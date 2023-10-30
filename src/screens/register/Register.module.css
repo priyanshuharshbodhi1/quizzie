@@ -59,6 +59,14 @@ body {
   cursor: pointer;
 }
 
+.logInMode:hover{
+  background: rgba(84, 101, 251, 0.24);
+}
+
+.signUpMode:hover{
+  background: rgba(84, 101, 251, 0.24);
+}
+
 .activeMode {
   box-shadow: 0px 0px 50px 0px rgba(0, 25, 255, 0.24);
 }
@@ -105,5 +113,15 @@ body {
   margin: auto;
   margin-top: 2rem;
   cursor: pointer;
+  transition-duration: .4s;
   color: white;
+}
+
+.signUpBtn:hover{
+  background: #728ffa;
+
+}
+
+.signUpBtn:active {
+  transform: scale(0.9);
 }
