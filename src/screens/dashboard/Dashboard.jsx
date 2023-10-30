@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import TrendingCard from "../../components/trendingCard/TrendingCard";
@@ -338,7 +338,7 @@ const Dashboard = () => {
   //     });
 
   const jwtToken = localStorage.getItem("jwt");
-  console.log("jwt from local storage:", jwtToken);
+  // console.log("jwt from local storage:", jwtToken);
 
   axios
     .get(`${process.env.REACT_APP_API_BASE_URL}/api/isloggedin`, {
@@ -360,6 +360,24 @@ const Dashboard = () => {
       console.error("An error occurred:", error);
     });
 
+  // const handleLogout = () => {
+  //   axios
+  //     .post(`${process.env.REACT_APP_API_BASE_URL}/api/logout`, null, {
+  //       withCredentials: true,
+  //     })
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         Cookies.remove("jwt");
+  //         // setIsLoggedIn(false);
+  //         // console.log("User is logged out");
+  //         navigate("/");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error during logout:", error);
+  //     });
+  // };
+
   const handleLogout = () => {
     axios
       .post(`${process.env.REACT_APP_API_BASE_URL}/api/logout`, null, {
@@ -367,7 +385,7 @@ const Dashboard = () => {
       })
       .then((response) => {
         if (response.status === 200) {
-          Cookies.remove("jwt");
+          localStorage.removeItem("jwt"); // Remove JWT from local storage
           // setIsLoggedIn(false);
           // console.log("User is logged out");
           navigate("/");
@@ -377,6 +395,7 @@ const Dashboard = () => {
         console.error("Error during logout:", error);
       });
   };
+  
 
   const handleShareIconClick = (quizId) => {
     const quizLink = `http://localhost:3000/quiz/${quizId}`;

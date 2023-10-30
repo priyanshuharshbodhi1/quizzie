@@ -45,15 +45,16 @@ const Register = () => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        console.log(data.token)
+        window.location.href = '/dashboard';
+        // console.log(data.token)
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   };
 
-  const jwtToken2 = localStorage.getItem('jwt');
-  console.log("jwt from local storage:", jwtToken2);
+  // const jwtToken2 = localStorage.getItem('jwt');
+  // console.log("jwt from local storage:", jwtToken2);
 
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
@@ -65,6 +66,7 @@ const Register = () => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("jwt", data.token);
+        window.location.href = '/dashboard';
       })
       .catch((error) => {
         console.error("Error:", error);
