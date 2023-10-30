@@ -23,13 +23,15 @@ const Question = () => {
   // const [userAnswers, setUserAnswers] = useState({});
 
   const handleOptionClick = (index) => {
-    setSelectedOptionIndex(index);
+    if (quiz && quiz.questions && quiz.questions[0]) {
+      setSelectedOptionIndex(index);
 
-    const isCorrect =
-      quiz.questions[0].ansOption[currentQuestionIndex] === index;
-    const newUserAnswers = { ...userAnswers };
-    newUserAnswers[currentQuestionIndex] = isCorrect ? 1 : 0;
-    setUserAnswers(newUserAnswers);
+      const isCorrect =
+        quiz.questions[0].ansOption[currentQuestionIndex] === index;
+      const newUserAnswers = { ...userAnswers };
+      newUserAnswers[currentQuestionIndex] = isCorrect ? 1 : 0;
+      setUserAnswers(newUserAnswers);
+    }
   };
 
   // const handleOptionClick = (index) => {
@@ -45,6 +47,8 @@ const Question = () => {
   useEffect(() => {
     if (
       quiz &&
+      quiz.questions &&
+      quiz.questions[0] &&
       quiz.quizType !== "Poll Type" &&
       quiz.questions[0].timerType[currentQuestionIndex] !== "OFF"
     ) {
@@ -73,40 +77,47 @@ const Question = () => {
   }, [quizId]);
 
   const handleNext = () => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 500);
+    if (quiz && quiz.questions && quiz.questions[0]) {
+      setLoading(true);
+      setTimeout(() => setLoading(false), 500);
 
-    if (currentQuestionIndex === pollQuestionsCount - 1) {
-      const correctAnswers = Object.values(userAnswers).reduce(
-        (sum, answer) => sum + answer,
-        0
-      );
-
-      axios
-        .post(
-          `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/submit`,
-          { userAnswers }
-        )
-        .catch((error) =>
-          console.error("Error submitting quiz answers:", error)
+      if (currentQuestionIndex === pollQuestionsCount - 1) {
+        const correctAnswers = Object.values(userAnswers).reduce(
+          (sum, answer) => sum + answer,
+          0
         );
 
-      axios
-        .post(
-          `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/impression`
-        )
-        .catch((error) => console.error("Error recording impression:", error));
+        axios
+          .post(
+            `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/submit`,
+            { userAnswers }
+          )
+          .catch((error) =>
+            console.error("Error submitting quiz answers:", error)
+          );
 
-      if (quiz.quizType === "Poll Type") {
-        navigate("/pollcompleted");
+        axios
+          .post(
+            `${process.env.REACT_APP_API_BASE_URL}/api/quiz/${quizId}/impression`
+          )
+          .catch((error) =>
+            console.error("Error recording impression:", error)
+          );
+
+        if (quiz.quizType === "Poll Type") {
+          navigate("/pollcompleted");
+        } else {
+          navigate("/quizcompleted", {
+            state: {
+              score: correctAnswers,
+              totalQuestions: pollQuestionsCount,
+            },
+          });
+        }
       } else {
-        navigate("/quizcompleted", {
-          state: { score: correctAnswers, totalQuestions: pollQuestionsCount },
-        });
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setSelectedOptionIndex(null);
       }
-    } else {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedOptionIndex(null);
     }
   };
 
@@ -136,8 +147,9 @@ const Question = () => {
                 `00:0${timer} Sec`}
             </div>
           </div>
-          <div className={styles.pollQuestion}>
-          {currentQuestionIndex + 1}. {quiz.questions[0].pollQuestion[currentQuestionIndex]}
+          {/* <div className={styles.pollQuestion}>
+            {currentQuestionIndex + 1}.{" "}
+            {quiz.questions[0].pollQuestion[currentQuestionIndex]}
           </div>
           <div className={styles.options}>
             {quiz &&
@@ -177,7 +189,58 @@ const Question = () => {
                   return null;
                 }
               )}
+          </div> */}
+
+          <div className={styles.pollQuestion}>
+            {quiz &&
+              quiz.questions &&
+              quiz.questions[0] &&
+              quiz.questions[0].pollQuestion &&
+              quiz.questions[0].pollQuestion[currentQuestionIndex] && (
+                <>
+                  {currentQuestionIndex + 1}.{" "}
+                  {quiz.questions[0].pollQuestion[currentQuestionIndex]}
+                  <div className={styles.options}>
+                    {quiz.questions[0].options &&
+                      quiz.questions[0].options[currentQuestionIndex] &&
+                      quiz.questions[0].options[currentQuestionIndex].map(
+                        (option, index) => {
+                          if (option && option.text.trim() !== "") {
+                            return (
+                              <div
+                                key={index}
+                                className={`${styles.option} ${
+                                  index === selectedOptionIndex
+                                    ? styles.selectedOption
+                                    : ""
+                                }`}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleOptionClick(index)}
+                              >
+                                {option.imageURL &&
+                                option.imageURL.trim() !== "" ? (
+                                  <div>
+                                    <img
+                                      className={styles.optionImage}
+                                      style={{
+                                        backgroundImage: `url(${option.imageURL})`,
+                                      }}
+                                      alt=""
+                                    />
+                                  </div>
+                                ) : null}
+                                <div>{option.text}</div>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }
+                      )}
+                  </div>
+                </>
+              )}
           </div>
+
           <button
             className={styles.nextBtn}
             onClick={handleNext}
