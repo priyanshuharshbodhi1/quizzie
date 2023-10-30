@@ -45,6 +45,7 @@ const Register = () => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("jwt", data.token);
+        console.log(data.token)
       })
       .catch((error) => {
         console.error("Error:", error);
