@@ -129,9 +129,19 @@ const Question = () => {
     );
   }
 
-  const pollQuestionsCount = Object.keys(quiz.questions[0].pollQuestion).length;
+  // const pollQuestionsCount = Object.keys(quiz.questions[0].pollQuestion).length;
   // console.log(pollQuestionsCount);
-  console.log(quiz.questions[0].options[currentQuestionIndex]);
+  // console.log(quiz.questions[0].options[currentQuestionIndex]);
+
+  let pollQuestionsCount = 0;
+  if (quiz && quiz.questions && quiz.questions[0] && quiz.questions[0].pollQuestion) {
+    pollQuestionsCount = Object.keys(quiz.questions[0].pollQuestion).length;
+  }
+  console.log(pollQuestionsCount);
+  
+  if (quiz && quiz.questions && quiz.questions[0] && quiz.questions[0].options) {
+    console.log(quiz.questions[0].options[currentQuestionIndex]);
+  }
 
   return (
     <>
