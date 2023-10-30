@@ -312,6 +312,7 @@ const Dashboard = () => {
   //getting the login credentials from the user
   const jwtToken = Cookies.get("jwt");
   console.log("jwt from cookies:", jwtToken);
+  console.log("cookie:", document.cookie)
   axios
     .get(`${process.env.REACT_APP_API_BASE_URL}/api/isloggedin`, {
       headers: {
