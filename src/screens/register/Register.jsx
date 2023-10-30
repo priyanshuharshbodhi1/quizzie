@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Register.module.css";
 import { FadeLoader } from "react-spinners";
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,6 +15,9 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [activeMode, setActiveMode] = useState("signup");
+
+  const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +38,8 @@ const Register = () => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        window.location.href = "/dashboard";
+        // window.location.href = "/dashboard";
+        navigate('/dashboard');
         // console.log(data.token)
       })
       .catch((error) => {
@@ -54,7 +60,8 @@ const Register = () => {
       .then((response) => response.json())
       .then((data) => {
         localStorage.setItem("jwt", data.token);
-        window.location.href = "/dashboard";
+        // window.location.href = "/dashboard";
+        navigate('/dashboard');
       })
       .catch((error) => {
         console.error("Error:", error);
