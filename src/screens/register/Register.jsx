@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./Register.module.css";
 import { FadeLoader } from "react-spinners";
 
-
 const Register = () => {
   // const [loading, setLoading] = useState(true);
 
@@ -17,8 +16,7 @@ const Register = () => {
   //       <FadeLoader color="#474444" />
   //     </div>
   //   );
-  // } 
-
+  // }
 
   const [formData, setFormData] = useState({
     name: "",
@@ -37,13 +35,36 @@ const Register = () => {
     }));
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(formData);
-  // };
-
   const handleSubmitSignUpForm = (e) => {
-    // console.log("submit form");
+    e.preventDefault();
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const handleSubmitLoginForm = (e) => {
+    e.preventDefault();
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const [loading, setLoading] = useState(true);
@@ -59,7 +80,7 @@ const Register = () => {
         <FadeLoader color="#474444" />
       </div>
     );
-  } 
+  }
 
   return (
     <>
@@ -90,8 +111,7 @@ const Register = () => {
               <form
                 action={`${process.env.REACT_APP_API_BASE_URL}/api/signup`}
                 method="POST"
-                // onSubmit={handleSubmit}
-
+                onSubmit={handleSubmitSignUpForm}
                 className={styles.formContainer}
               >
                 <div className={styles.formAttribute}>
@@ -168,7 +188,7 @@ const Register = () => {
               <form
                 action={`${process.env.REACT_APP_API_BASE_URL}/api/login`}
                 method="POST"
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmitLoginForm}
                 className={styles.formContainer}
               >
                 <div className={styles.formAttribute}>
