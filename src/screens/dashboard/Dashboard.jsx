@@ -397,7 +397,7 @@ const Dashboard = () => {
   };
 
   const handleShareIconClick = (quizId) => {
-    const quizLink = `http://localhost:3000/quiz/${quizId}`;
+    const quizLink = `${process.env.REACT_APP_URL}/quiz/${quizId}`;
     navigator.clipboard
       .writeText(quizLink)
       .then(() => {
@@ -421,7 +421,7 @@ const Dashboard = () => {
 
   const notifyLinkCopied = () => {
     if (newQuizId) {
-      const quizLink = `http://localhost:3000/quiz/${newQuizId}`;
+      const quizLink = `${process.env.REACT_APP_URL}/quiz/${newQuizId}`;
       navigator.clipboard
         .writeText(quizLink)
         .then(() => {
@@ -1021,7 +1021,7 @@ const Dashboard = () => {
                 </p>
                 <div className={styles.quizLink}>
                   {newQuizId
-                    ? `http://localhost:3000/quiz/${newQuizId}`
+                    ? `${process.env.REACT_APP_URL}/quiz/${newQuizId}`
                     : "Link not created, Please create a new Quiz"}
                 </div>
 
