@@ -121,7 +121,7 @@ const Question = () => {
     }
   };
 
-  if (loading) {
+  if (loading || quiz === null) {
     return (
       <div className={styles.loaderContainer}>
         <FadeLoader color="#474444" />
@@ -157,50 +157,6 @@ const Question = () => {
                 `00:0${timer} Sec`}
             </div>
           </div>
-          {/* <div className={styles.pollQuestion}>
-            {currentQuestionIndex + 1}.{" "}
-            {quiz.questions[0].pollQuestion[currentQuestionIndex]}
-          </div>
-          <div className={styles.options}>
-            {quiz &&
-              quiz.questions &&
-              quiz.questions[0] &&
-              quiz.questions[0].options &&
-              quiz.questions[0].options[currentQuestionIndex] &&
-              quiz.questions[0].options[currentQuestionIndex].map(
-                (option, index) => {
-                  if (option && option.text.trim() !== "") {
-                    return (
-                      <div
-                        key={index}
-                        className={`${styles.option} ${
-                          index === selectedOptionIndex
-                            ? styles.selectedOption
-                            : ""
-                        }`}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleOptionClick(index)}
-                      >
-                        {option.imageURL && option.imageURL.trim() !== "" ? (
-                          <div>
-                            <img
-                              className={styles.optionImage}
-                              style={{
-                                backgroundImage: `url(${option.imageURL})`,
-                              }}
-                              alt=""
-                            />
-                          </div>
-                        ) : null}
-                        <div>{option.text}</div>
-                      </div>
-                    );
-                  }
-                  return null;
-                }
-              )}
-          </div> */}
-
           <div className={styles.pollQuestion}>
             {quiz &&
               quiz.questions &&
