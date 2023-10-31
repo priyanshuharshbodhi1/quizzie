@@ -11,7 +11,11 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [loginErrorMessage, setLoginErrorMessage] = useState("");
+  const [signupErrorMessage, setSignupErrorMessage] = useState("");
+
+  const [isSignUpLoading, setIsSignUpLoading] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
 
   const [activeMode, setActiveMode] = useState("signup");
 
@@ -25,45 +29,95 @@ const Register = () => {
     }));
   };
 
+  // const handleSubmitSignUpForm = (e) => {
+  //   e.preventDefault();
+  //   setIsSignUpLoading(true);
+  //   console.log("fucntion started");
+
+  //   fetch(`${process.env.REACT_APP_API_BASE_URL}/api/signup`, {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(formData),
+  //   })
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       localStorage.setItem("jwt", data.token);
+  //       // window.location.href = "/dashboard";
+  //       navigate("/dashboard");
+  //       // console.log(data.token)
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
+  //   console.log("fucntion stopped");
+
+  //   // setIsLoading(false);
+  // };
+
   const handleSubmitSignUpForm = (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    console.log("fucntion started");
+
+    if (formData.password !== formData.confirmPassword) {
+      setSignupErrorMessage("Passwords do not match");
+      setFormData({
+        ...formData,
+        password: "",
+        confirmPassword: "",
+      });
+      return;
+    }
+
+    setIsSignUpLoading(true);
 
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        // window.location.href = "/dashboard";
-        navigate("/dashboard");
-        // console.log(data.token)
+        if (data.status === "FAIL") {
+          setSignupErrorMessage(data.message);
+          setIsSignUpLoading(false);
+        } else {
+          localStorage.setItem("jwt", data.token);
+          navigate("/dashboard");
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-    console.log("fucntion stopped");
-
-    // setIsLoading(false);
   };
 
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoginLoading(true);
     console.log("fucntion started");
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((data) => {
-        localStorage.setItem("jwt", data.token);
-        // window.location.href = "/dashboard";
-        navigate("/dashboard");
+        if (data.status === "FAIL") {
+          setLoginErrorMessage(data.message);
+          console.log(data.message);
+          setIsLoginLoading(false);
+          setFormData({
+            ...formData,
+            password: "",
+          });
+        } else {
+          localStorage.setItem("jwt", data.token);
+          navigate("/dashboard");
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -182,16 +236,17 @@ const Register = () => {
                     className={styles.formInput}
                   />
                 </div>
-
+                {signupErrorMessage && (
+                  <div className={styles.errorMessageLabel}>
+                    {signupErrorMessage}
+                  </div>
+                )}
                 <button
                   type="submit"
                   className={styles.signUpBtn}
                   onClick={handleSubmitSignUpForm}
                 >
-                  {/* Sign Up{" "} */}
-                  {isLoading ? "Loading..." : "Sign Up"}
-
-                  {/* {isLoading && <FadeLoader color="#474444" size={10} />} */}
+                  {isSignUpLoading ? "Loading..." : "Sign Up"}
                 </button>
               </form>
             </div>
@@ -236,9 +291,14 @@ const Register = () => {
                   />
                 </div>
 
+                {loginErrorMessage && (
+                  <div className={styles.errorMessageLabel}>
+                    {loginErrorMessage}
+                  </div>
+                )}
+
                 <button type="submit" className={styles.signUpBtn}>
-                  {isLoading ? "Loading..." : "Log In"}
-                  {/* Log In {isLoading && <FadeLoader color="#474444" size={10}/>} */}
+                  {isLoginLoading ? "Loading..." : "Log In"}
                 </button>
               </form>
             </div>
