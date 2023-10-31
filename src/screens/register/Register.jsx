@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Register.module.css";
 import { FadeLoader } from "react-spinners";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,7 +17,6 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -30,6 +28,8 @@ const Register = () => {
   const handleSubmitSignUpForm = (e) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log("fucntion started");
+
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,12 +39,13 @@ const Register = () => {
       .then((data) => {
         localStorage.setItem("jwt", data.token);
         // window.location.href = "/dashboard";
-        navigate('/dashboard');
+        navigate("/dashboard");
         // console.log(data.token)
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+    console.log("fucntion stopped");
 
     setIsLoading(false);
   };
@@ -52,6 +53,7 @@ const Register = () => {
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log("fucntion started");
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,12 +63,19 @@ const Register = () => {
       .then((data) => {
         localStorage.setItem("jwt", data.token);
         // window.location.href = "/dashboard";
-        navigate('/dashboard');
+        navigate("/dashboard");
       })
       .catch((error) => {
         console.error("Error:", error);
       });
+
+    console.log("fucntion stopped");
+
     setIsLoading(false);
+
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    // }, 9000);
   };
 
   const [loading, setLoading] = useState(true);
@@ -179,7 +188,10 @@ const Register = () => {
                   className={styles.signUpBtn}
                   onClick={handleSubmitSignUpForm}
                 >
-                  Sign Up {isLoading && <FadeLoader color="#474444" size={10}/>}
+                  {/* Sign Up{" "} */}
+                  {isLoading ? "Loading..." : "Sign Up"}
+
+                  {/* {isLoading && <FadeLoader color="#474444" size={10} />} */}
                 </button>
               </form>
             </div>
@@ -225,7 +237,8 @@ const Register = () => {
                 </div>
 
                 <button type="submit" className={styles.signUpBtn}>
-                  Log In {isLoading && <FadeLoader color="#474444" size={10}/>}
+                  {isLoading ? "Loading..." : "Log In"}
+                  {/* Log In {isLoading && <FadeLoader color="#474444" size={10}/>} */}
                 </button>
               </form>
             </div>

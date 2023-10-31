@@ -149,6 +149,7 @@ const Dashboard = () => {
 
   const handleCreateQuizSubmit = () => {
     // Validate all fields are filled
+    
     const isPollQuestionFilled = pollQuestion[0] !== "";
     const isOptionsFilled = options.some((option) =>
       option.some((item) => item.text !== "" || item.imageURL !== "")
