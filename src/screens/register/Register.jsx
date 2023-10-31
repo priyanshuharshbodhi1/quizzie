@@ -47,7 +47,7 @@ const Register = () => {
       });
     console.log("fucntion stopped");
 
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   const handleSubmitLoginForm = (e) => {
