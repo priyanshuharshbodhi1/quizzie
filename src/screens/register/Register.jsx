@@ -71,7 +71,7 @@ const Register = () => {
 
     console.log("fucntion stopped");
 
-    setIsLoading(false);
+    // setIsLoading(false);
 
     // setTimeout(() => {
     //   setIsLoading(false);
