@@ -149,7 +149,7 @@ const Dashboard = () => {
 
   const handleCreateQuizSubmit = () => {
     // Validate all fields are filled
-    
+
     const isPollQuestionFilled = pollQuestion[0] !== "";
     const isOptionsFilled = options.some((option) =>
       option.some((item) => item.text !== "" || item.imageURL !== "")
@@ -417,7 +417,6 @@ const Dashboard = () => {
       }, 600);
     }
   }, [quizData, trendingQuizzes]);
-  
 
   return (
     <>
@@ -483,9 +482,9 @@ const Dashboard = () => {
                   </div>
                   <div className={styles.totalImpressions}>
                     <div className={styles.dashboardQuizDataNumbers}>
-                      {quizData && quizData.impressions >= 1000
-                        ? `${(quizData.impressions / 1000).toFixed(1)}k`
-                        : quizData.impressions}
+                      {quizData && quizData.impressions >= 2000
+                        ? `${Math.round(quizData.impressions / 2 / 1000).toFixed(1)}k`
+                        : Math.round(quizData.impressions / 2)}
                     </div>{" "}
                     Impressions
                   </div>
@@ -502,7 +501,7 @@ const Dashboard = () => {
                         <TrendingCard
                           key={quiz._id}
                           quizName={quiz.quizName}
-                          impressions={quiz.impressions}
+                          impressions={Math.round(quiz.impressions/2)}
                           creationDate={new Date(quiz.date).toLocaleDateString(
                             "en-US",
                             { day: "2-digit", month: "short", year: "numeric" }
