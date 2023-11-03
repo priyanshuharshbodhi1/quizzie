@@ -29,7 +29,7 @@ const QuizAnalysis = () => {
     <div className={styles.mainContainer}>
       <div className={styles.header}>{quiz.quizName} Question Analysis</div>
       {Object.values(quiz.questions[0].pollQuestion).map((question, index) => {
-        const totalAttempts = quiz.impressions;
+        const totalAttempts = Math.round(quiz.impressions/2);
         const correctAttempts =
           (quiz.correctAnswers && quiz.correctAnswers[index]) || 0;
         const incorrectAttempts = totalAttempts - correctAttempts;

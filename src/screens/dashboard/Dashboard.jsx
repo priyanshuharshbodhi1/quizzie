@@ -544,7 +544,7 @@ const Dashboard = () => {
                         <td>{index + 1}</td>
                         <td>{quiz.quizName}</td>
                         <td>{new Date(quiz.date).toLocaleDateString()}</td>
-                        <td>{quiz.impressions}</td>
+                        <td>{Math.round(quiz.impressions/2)}</td>
                         <td>
                           <img
                             src={EditIcon}
