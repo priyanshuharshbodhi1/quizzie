@@ -29,33 +29,6 @@ const Register = () => {
     }));
   };
 
-  // const handleSubmitSignUpForm = (e) => {
-  //   e.preventDefault();
-  //   setIsSignUpLoading(true);
-  //   console.log("fucntion started");
-
-  //   fetch(`${process.env.REACT_APP_API_BASE_URL}/api/signup`, {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(formData),
-  //   })
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       localStorage.setItem("jwt", data.token);
-  //       // window.location.href = "/dashboard";
-  //       navigate("/dashboard");
-  //       // console.log(data.token)
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-  //   console.log("fucntion stopped");
-
-  //   // setIsLoading(false);
-  // };
-
   const handleSubmitSignUpForm = (e) => {
     e.preventDefault();
 
@@ -96,7 +69,7 @@ const Register = () => {
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
     setIsLoginLoading(true);
-    console.log("fucntion started");
+    // console.log("fucntion started");
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -125,11 +98,6 @@ const Register = () => {
 
     console.log("fucntion stopped");
 
-    // setIsLoading(false);
-
-    // setTimeout(() => {
-    //   setIsLoading(false);
-    // }, 9000);
   };
 
   const [loading, setLoading] = useState(true);
