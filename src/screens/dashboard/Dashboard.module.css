@@ -449,3 +449,10 @@
 input[type="radio"]:checked {
   color: #60b84b; 
 }
+
+
+@media (max-width: 998px) {
+  .modal{
+    width: auto;
+  }
+}

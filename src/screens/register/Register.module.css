@@ -130,7 +130,7 @@ body {
   transform: scale(0.9);
 }
 
-@media (max-width: 868px) {
+@media (max-width: 998px) {
   .formAttribute {
     display: flex;
     flex-direction: column;
