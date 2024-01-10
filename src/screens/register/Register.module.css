@@ -4,7 +4,6 @@ body {
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
   background: #f2f2f2;
-  
 }
 
 .mainContainer {
@@ -59,11 +58,11 @@ body {
   cursor: pointer;
 }
 
-.logInMode:hover{
+.logInMode:hover {
   background: rgba(84, 101, 251, 0.24);
 }
 
-.signUpMode:hover{
+.signUpMode:hover {
   background: rgba(84, 101, 251, 0.24);
 }
 
@@ -103,9 +102,9 @@ body {
   padding: 7px;
 }
 
-.errorMessageLabel{
+.errorMessageLabel {
   color: #f85555;
-  font-size: .8rem;
+  font-size: 0.8rem;
   margin-top: -0.5rem;
 }
 
@@ -119,15 +118,56 @@ body {
   margin: auto;
   margin-top: 1rem;
   cursor: pointer;
-  transition-duration: .4s;
+  transition-duration: 0.4s;
   color: white;
 }
 
-.signUpBtn:hover{
+.signUpBtn:hover {
   background: #728ffa;
-
 }
 
 .signUpBtn:active {
   transform: scale(0.9);
+}
+
+@media (max-width: 868px) {
+  .formAttribute {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .formInput {
+    width: fit-content;
+    min-width: -webkit-fill-available;
+  }
+  .body {
+    min-height: 100vh;
+  }
+  .mainContainer {
+    padding: 3rem 0.9rem;
+    /* width: max-content; */
+    min-height: 90vh;
+  }
+
+  .signUpFormContainer, .logInFormContainer {
+    margin: 4rem 2rem;
+  }
+  .subContainer {
+    width: auto;
+    height: -webkit-fill-available;
+    margin-top: 4rem;
+
+  }
+
+  .formContainer {
+    width: auto;
+    margin-top: 0.5rem;
+  }
+  .signUpMode,
+  .logInMode {
+    padding: 0.5rem 1.5rem;
+  }
+  .signUpBtn {
+    padding: 0.5rem 3rem;
+  }
 }
