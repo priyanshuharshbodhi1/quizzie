@@ -149,14 +149,14 @@ body {
     min-height: 90vh;
   }
 
-  .signUpFormContainer, .logInFormContainer {
+  .signUpFormContainer,
+  .logInFormContainer {
     margin: 4rem 2rem;
   }
   .subContainer {
     width: auto;
     height: -webkit-fill-available;
-    margin-top: 4rem;
-
+    margin-top: 2.5rem;
   }
 
   .formContainer {
