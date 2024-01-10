@@ -966,7 +966,7 @@ const Dashboard = () => {
                 <div className={styles.quizLink}>
                   {newQuizId
                     ? `${process.env.REACT_APP_URL}/quiz/${newQuizId}`
-                    : "Link not created, Please create a new Quiz"}
+                    : "Link loading... "}
                 </div>
 
                 <div className={styles.buttonContainer}>
