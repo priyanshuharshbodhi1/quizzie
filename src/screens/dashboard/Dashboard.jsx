@@ -162,19 +162,24 @@ const Dashboard = () => {
         ? Object.values(timerType).some((value) => value !== "")
         : true;
     if (!isPollQuestionFilled) {
-      console.log("Poll question is not filled");
+      alert("Poll question is not filled. Please fill it.");
+      return;
     }
     if (selectedOptionType === null) {
-      console.log("Selected option type is not set");
+      alert("Selected option type is not set. Please set it.");
+      return;
     }
     if (!isOptionsFilled) {
-      console.log("Options are not filled");
+      alert("Options are not filled. Please fill it.");
+      return;
     }
     if (!isAnsOptionFilled) {
-      console.log("Answer option is not filled");
+      alert("Answer option is not set. Please set it.");
+      return;
     }
     if (!isTimerTypeFilled) {
-      console.log("Timer type is not filled");
+      alert("Timer type is not set. Please set it.");
+      return;
     }
 
     if (!quizName || !quizType) {
@@ -182,65 +187,55 @@ const Dashboard = () => {
       return;
     }
 
-    if (
-      !isPollQuestionFilled ||
-      selectedOptionType === null ||
-      !isOptionsFilled ||
-      !isAnsOptionFilled ||
-      (quizType !== "Poll Type" && !isTimerTypeFilled)
-    ) {
-      alert("Please fill all the fields before creating the quiz.");
-    } else {
-      console.log(options);
+    console.log(options);
 
-      const questions = [
+    const questions = [
+      {
+        pollQuestion,
+        timerType,
+        options,
+        ansOption,
+      },
+    ];
+
+    axios
+      .post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/createquiz`,
+        { quizName, quizType, questions, email },
         {
-          pollQuestion,
-          timerType,
-          options,
-          ansOption,
-        },
-      ];
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        setNewQuizId(response.data.id);
+      })
+      .catch((error) => {
+        console.error("An error occurred while saving the quiz:", error);
+      });
 
-      axios
-        .post(
-          `${process.env.REACT_APP_API_BASE_URL}/api/createquiz`,
-          { quizName, quizType, questions, email },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          setNewQuizId(response.data.id);
-        })
-        .catch((error) => {
-          console.error("An error occurred while saving the quiz:", error);
-        });
-
-      // delete data in states
-      setPollQuestion("");
-      setOptions(
-        Array(5)
-          .fill()
-          .map(() => [
-            { text: "", imageURL: "" },
-            { text: "", imageURL: "" },
-            { text: "", imageURL: "" },
-            { text: "", imageURL: "" },
-          ])
-      );
-      setAnsOption({});
-      setTimerType({});
-      setQuizName("");
-      setQuizType("");
-      setQuestions([1]);
-      setCurrentQuestionIndex(0);
-      setShowQuizPublishedModal(true);
-      setShowQuestionModal(false);
-      setNewQuizId(null);
-    }
+    // delete data in states
+    setPollQuestion("");
+    setOptions(
+      Array(5)
+        .fill()
+        .map(() => [
+          { text: "", imageURL: "" },
+          { text: "", imageURL: "" },
+          { text: "", imageURL: "" },
+          { text: "", imageURL: "" },
+        ])
+    );
+    setAnsOption({});
+    setTimerType({});
+    setQuizName("");
+    setQuizType("");
+    setQuestions([1]);
+    setCurrentQuestionIndex(0);
+    setShowQuizPublishedModal(true);
+    setShowQuestionModal(false);
+    setNewQuizId(null);
   };
 
   const handleOptionTextChange = (e, questionIndex, optionIndex) => {
