@@ -73,10 +73,10 @@ const Dashboard = () => {
   //for question numbers
   const [questions, setQuestions] = useState([1]);
   const handleAddQuestion = () => {
-    if (questions.length < 5) {
+    // if (questions.length < 5) {
       setQuestions([...questions, { title: "" }]);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
+    // }
   };
 
   const handleDeleteQuestion = (index) => {
@@ -119,7 +119,7 @@ const Dashboard = () => {
   };
 
   const [options, setOptions] = useState(
-    Array(5)
+    Array(100)
       .fill()
       .map(() => [
         { text: "", imageURL: "" },
@@ -691,6 +691,7 @@ const Dashboard = () => {
                       display: "flex",
                       gap: ".5rem",
                       alignItems: "center",
+                      overflowX: "auto",
                     }}
                   >
                     {questions.map((question, index) => (
@@ -714,16 +715,16 @@ const Dashboard = () => {
                         )}
                       </div>
                     ))}
-                    {questions.length < 5 && (
+                    {/* {questions.length < 5 && ( */}
                       <div
                         className={styles.addBtn}
                         onClick={handleAddQuestion}
                       >
                         +
                       </div>
-                    )}
+                    {/* // )} */}
                   </div>
-                  <p>Max 5 Questions</p>
+                  {/* <p>Max 5 Questions</p> */}
                 </div>
                 <div className={styles.questionContent}>
                   <div>

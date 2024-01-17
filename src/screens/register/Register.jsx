@@ -9,6 +9,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    code: ""
   });
 
   const [loginErrorMessage, setLoginErrorMessage] = useState("");
@@ -42,6 +43,17 @@ const Register = () => {
       return;
     }
 
+    
+    if (formData.code !== "010203") {
+      alert("Please enter the correct Admin code");
+      setFormData({
+        ...formData,
+        code: "",
+      });
+      // setIsSignUpLoading(false);
+      return;
+    }
+    
     setIsSignUpLoading(true);
 
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/signup`, {
@@ -68,8 +80,21 @@ const Register = () => {
 
   const handleSubmitLoginForm = (e) => {
     e.preventDefault();
-    setIsLoginLoading(true);
+
     // console.log("fucntion started");
+    
+    if (formData.code !== "010203") {
+      console.log(formData.code)
+      alert("Please enter the correct Admin code");
+      setFormData({
+        ...formData,
+        code: "",
+      });
+      // setIsSignUpLoading(false);
+      return;
+    }
+    setIsLoginLoading(true);
+    
     fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -204,6 +229,20 @@ const Register = () => {
                     className={styles.formInput}
                   />
                 </div>
+                <div className={styles.formAttribute}>
+                  <label htmlFor="code" className={styles.formLabel}>
+                    Admin Code
+                  </label>
+                  <input
+                    type="password"
+                    id="code"
+                    name="code"
+                    value={formData.code}
+                    onChange={handleChange}
+                    required
+                    className={styles.formInput}
+                  />
+                </div>
                 {signupErrorMessage && (
                   <div className={styles.errorMessageLabel}>
                     {signupErrorMessage}
@@ -253,6 +292,21 @@ const Register = () => {
                     id="password"
                     name="password"
                     value={formData.password}
+                    onChange={handleChange}
+                    required
+                    className={styles.formInput}
+                  />
+                </div>
+
+                <div className={styles.formAttribute}>
+                  <label htmlFor="code" className={styles.formLabel}>
+                    Admin Code
+                  </label>
+                  <input
+                    type="password"
+                    id="code"
+                    name="code"
+                    value={formData.code}
                     onChange={handleChange}
                     required
                     className={styles.formInput}
